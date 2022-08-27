@@ -12,8 +12,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.logging.Logger;
 
-// TODO: Add bounty claim on kill with perm
-//  Add team friendly-fire config option
 /**
  * Main class for BountySeekers plugin, the entrypoint to registration and kickstarting of any needed
  * tasks.

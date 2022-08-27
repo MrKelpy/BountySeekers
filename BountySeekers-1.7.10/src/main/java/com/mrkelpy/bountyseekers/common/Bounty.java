@@ -4,7 +4,6 @@ import com.mrkelpy.bountyseekers.BountySeekers;
 import com.mrkelpy.bountyseekers.utils.FileUtils;
 import com.mrkelpy.bountyseekers.utils.SerializationUtils;
 import jdk.nashorn.internal.objects.annotations.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -45,7 +44,7 @@ public class Bounty {
      * @param playerUUID The target player's UUID.
      */
     public Bounty(UUID playerUUID) {
-        this.target = Bukkit.getOfflinePlayer(playerUUID).getName();
+        this.target = BountySeekers.UUID_CACHE.getName(playerUUID);
         this.targetUUID = playerUUID;
 
         this.bountyFile = new File(FileUtils.makeDirectory("bounties"), playerUUID + ".bounty");

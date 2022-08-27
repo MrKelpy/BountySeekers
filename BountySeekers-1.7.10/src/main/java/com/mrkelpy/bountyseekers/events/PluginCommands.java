@@ -68,10 +68,9 @@ public class PluginCommands implements CommandExecutor {
      * @param args The arguments of the command
      * @return Boolean, feedback to the caller
      */
+    //supress unused return value
+    @SuppressWarnings("UnusedReturnValue")
     private boolean parseCommands(CommandSender commandSender, String[] args) {
-
-        // Using just the base command only shows the help menu
-        if (args.length == 0) return helpCommand(commandSender);
 
         // Process the arguments and remove the first element
         String command = args[0];
@@ -105,10 +104,9 @@ public class PluginCommands implements CommandExecutor {
             return setRewardLimitCommand(commandSender, args);
         }
 
-
         if (command.equalsIgnoreCase("help")) {
             if (!checkPermission("bounty.help", commandSender)) return true;
-            return helpCommand(commandSender);
+            return helpCommand(commandSender, args);
         }
 
         commandSender.sendMessage("§cUnknown command. Use /bounty help for a list of available commands");
@@ -196,10 +194,8 @@ public class PluginCommands implements CommandExecutor {
      * @param args The arguments of the command
      * @return Boolean, feedback to the caller
      */
+    @SuppressWarnings("deprecation")
     private boolean bountyResetCommand(CommandSender commandSender, String[] args) {
-
-        // Only players can use this command
-        if (!(commandSender instanceof Player)) return false;
 
         if (args.length == 0) {
             commandSender.sendMessage("§cUsage: /bounty reset [target player]");
@@ -224,15 +220,28 @@ public class PluginCommands implements CommandExecutor {
      * @param commandSender The sender of the command
      * @return Boolean, feedback to the caller
      */
-    private boolean helpCommand(CommandSender commandSender) {
+    private boolean helpCommand(CommandSender commandSender, String[] args) {
 
-        commandSender.sendMessage(String.format("§e----- §c%s Command List§e-----", BountySeekers.PLUGIN_NAME));
-        commandSender.sendMessage("§e> §f/bounty list §7-> Displays a list of all the active bounties");
-        commandSender.sendMessage("§e> §f/bounty raise [target player] §7-> Raises a player's bounty.");
-        commandSender.sendMessage("§e> §f/bounty silentraise [target player] §7-> Raises a player's bounty, hiding the benefactor's identity.");
-        commandSender.sendMessage("§e> §f/bounty reset [target player] §7-> Resets a player's bounty.");
-        commandSender.sendMessage("§e> §f/bounty setrewardlimit <amount> §7-> Sets the reward limit for bounties.");
-        commandSender.sendMessage("§e> §f/bounty help §7-> Displays this list of commands.");
+        String menu = "default";
+        if (args.length > 0 && Objects.equals(args[0], "admin")) menu = args[0];
+
+        // Shows the normal commands help menu
+        if (Objects.equals(menu, "default")) {
+            commandSender.sendMessage(String.format("§e----- §c%s Command List§e-----", BountySeekers.PLUGIN_NAME));
+            commandSender.sendMessage("§e> §f/bounty list §7-> Displays a list of all the active bounties");
+            commandSender.sendMessage("§e> §f/bounty raise [target player] §7-> Raises a player's bounty.");
+            commandSender.sendMessage("§e> §f/bounty silentraise [target player] §7-> Raises a player's bounty, hiding the benefactor's identity.");
+            commandSender.sendMessage("§e> §f/bounty reset [target player] §7-> Resets a player's bounty.");
+            commandSender.sendMessage("§e> §f/bounty help §7-> Displays this list of commands.");
+            commandSender.sendMessage("§e> §f/bounty help admin §7-> Displays the list of admin commands.");
+        }
+
+        // Shows the admin commands help menu
+        else if (Objects.equals(menu, "admin") && commandSender.hasPermission("bounty.admin")) {
+            commandSender.sendMessage(String.format("§e----- §c%s Admin Command List§e-----", BountySeekers.PLUGIN_NAME));
+            commandSender.sendMessage("§e> §f/bounty setrewardlimit <amount> §7-> Sets the reward limit for bounties.");
+            commandSender.sendMessage("§e> §f/bounty help §7-> Displays this list of commands.");
+        }
 
         return true;
 

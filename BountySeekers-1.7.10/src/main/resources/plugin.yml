@@ -8,7 +8,7 @@ commands:
 
   bounty:
     usage: /bounty <command>
-    description: Master command. When used alone, displays the list of commands.
+    description: Master command.
 
   bounty list:
     usage: /bounty list

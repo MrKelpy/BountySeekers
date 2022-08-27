@@ -82,6 +82,7 @@ public abstract class PagedGUI implements Listener {
      */
     @EventHandler
     public void onItemClick(InventoryClickEvent event) {
+        if (event.isShiftClick()) event.setCancelled(true);
         if (event.getClickedInventory().equals(this.inventory)) event.setCancelled(true);
         else return;
 
