@@ -181,7 +181,7 @@ public class PluginCommands implements CommandExecutor {
         SimplePlayer target = new SimplePlayer(args[0]);
         Player player = (Player) commandSender;
 
-        if (BountySeekers.UUID_CACHE.getName(target.getUniqueId()) == null) {
+        if (target.getUniqueId() == null) {
             commandSender.sendMessage("§cThat player cannot found.");
             return true;
         }

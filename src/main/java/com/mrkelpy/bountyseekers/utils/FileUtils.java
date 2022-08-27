@@ -23,9 +23,9 @@ public class FileUtils {
     }
 
     /**
-     * Reads a .bounty file and returns a String containing the data.
+     * Reads a file and returns a String containing the data.
      *
-     * @return The data in the .bounty file.
+     * @return The data in the file
      */
     public static String readFile(File file) {
 
@@ -41,9 +41,9 @@ public class FileUtils {
     }
 
     /**
-     * Writes a string to a .bounty file.
+     * Writes a string to a file.
      *
-     * @param data The data to write to the file.
+     * @param data The string to write to the file.
      */
     public static void writeFile(File file, String data) {
 
@@ -52,8 +52,7 @@ public class FileUtils {
             if (!file.exists()) file.createNewFile();
             Files.write(file.toPath(), data.getBytes());
 
-        } catch (IOException ignored) {
-        }
+        } catch (IOException ignored) {}
 
     }
 }
