@@ -32,7 +32,7 @@ public class UUIDCache {
      * Returns a player's name from the UUID
      * @return The player's name
      */
-    public String get(UUID uuid) {
+    public String getName(UUID uuid) {
         return this.cache.getString(uuid.toString()) != null ? this.cache.get(uuid.toString()).toString() : null;
     }
 
@@ -40,8 +40,8 @@ public class UUIDCache {
      * Returns a player's UUID or name from a string. The string can be the UUID or name.
      * @return The player's UUID
      */
-    public String get(String string) {
-        return this.cache.getString(string) != null ? this.cache.get(string).toString() : null;
+    public UUID getUUID(String string) {
+        return this.cache.getString(string) != null ? UUID.fromString(this.cache.get(string).toString()) : null;
     }
 
     /**

@@ -3,8 +3,8 @@ package com.mrkelpy.bountyseekers.gui;
 import com.mrkelpy.bountyseekers.BountySeekers;
 import com.mrkelpy.bountyseekers.common.Benefactor;
 import com.mrkelpy.bountyseekers.common.Bounty;
+import com.mrkelpy.bountyseekers.common.SimplePlayer;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -27,7 +27,7 @@ public class BountyRaiseGUI extends ConfirmationGUI {
     /**
      * Main constructor for the ConfirmationGUI class.
      */
-    public BountyRaiseGUI(OfflinePlayer target, Benefactor benefactor) {
+    public BountyRaiseGUI(SimplePlayer target, Benefactor benefactor) {
         super("Raise " + target.getName() + "'s Bounty", 27);
         this.bounty = new Bounty(target.getUniqueId());
         this.benefactor = benefactor;
@@ -54,9 +54,35 @@ public class BountyRaiseGUI extends ConfirmationGUI {
             return;
         }
 
+        int rewardLimit = BountySeekers.INTERNAL_CONFIGS.getConfig().getInt("reward-limit");
+
         // Adds all the rewards inside the GUI to the bounty, and adds the benefactor.
-        for (int i = 0; this.storageSlots > i; i++)
+        for (int i = 0; this.storageSlots > i; i++) {
+
+            // Prevents the player from raising the target's bounty over the maximum amount.
+            if (this.bounty.getRewards().size() >= rewardLimit && rewardLimit != -1) {
+                player.sendMessage(BountySeekers.sendMessage(null, "Some items were returned to you because the target has hit the maximum bounty size."));
+
+                // If the bounty wasn't raised at all because the target doesn't hit the maximum size, stop the confirmation.
+                if (i == 0) {
+                    this.benefactor.getPlayer().closeInventory();
+                    return;
+                }
+
+                break;
+            }
+
             this.bounty.addReward(this.inventory.getItem(i));
+            this.inventory.setItem(i, null);
+        }
+
+        // Returns any leftover items to the player.
+        for (int i = 0; this.storageSlots > i; i++) {
+
+            if (this.inventory.getItem(i) == null) continue;
+            this.benefactor.getPlayer().getInventory().addItem(this.inventory.getItem(i));
+            this.inventory.setItem(i, null);
+        }
 
         this.bounty.save();
 

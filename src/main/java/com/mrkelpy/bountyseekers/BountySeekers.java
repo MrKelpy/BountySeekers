@@ -1,7 +1,9 @@
 package com.mrkelpy.bountyseekers;
 
+import com.mrkelpy.bountyseekers.configuration.InternalConfigs;
 import com.mrkelpy.bountyseekers.configuration.UUIDCache;
 import com.mrkelpy.bountyseekers.events.PlayerJoinListener;
+import com.mrkelpy.bountyseekers.events.PlayerKillListener;
 import com.mrkelpy.bountyseekers.events.PluginCommands;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -22,6 +24,7 @@ public class BountySeekers extends JavaPlugin {
     public static final String PLUGIN_NAME = "BountySeekers";
     public static final Logger LOGGER = Bukkit.getLogger();
     public static UUIDCache UUID_CACHE;
+    public static InternalConfigs INTERNAL_CONFIGS;
     public static File DATA_FOLDER;
 
     @Override
@@ -32,7 +35,9 @@ public class BountySeekers extends JavaPlugin {
         LOGGER.info("BountySeekers has been enabled!");
         getCommand("bounty").setExecutor(PluginCommands.INSTANCE);
         this.getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerKillListener(), this);
 
+        INTERNAL_CONFIGS = InternalConfigs.INSTANCE;
         UUID_CACHE = UUIDCache.INSTANCE;
     }
 

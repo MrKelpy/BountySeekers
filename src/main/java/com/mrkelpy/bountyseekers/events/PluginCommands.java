@@ -3,6 +3,7 @@ package com.mrkelpy.bountyseekers.events;
 import com.mrkelpy.bountyseekers.BountySeekers;
 import com.mrkelpy.bountyseekers.common.Benefactor;
 import com.mrkelpy.bountyseekers.common.Bounty;
+import com.mrkelpy.bountyseekers.common.SimplePlayer;
 import com.mrkelpy.bountyseekers.gui.BountyListDisplayGUI;
 import com.mrkelpy.bountyseekers.gui.BountyRaiseGUI;
 import org.bukkit.Bukkit;
@@ -50,7 +51,7 @@ public class PluginCommands implements CommandExecutor {
      * @return Whether the player has permission or not
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    private boolean checkPermission(String permission, CommandSender sender) {
+    public static boolean checkPermission(String permission, CommandSender sender) {
         if (sender.hasPermission("aos.all") || sender.isOp() || sender.hasPermission(permission))
             return true;
 
@@ -80,32 +81,64 @@ public class PluginCommands implements CommandExecutor {
 
         // Check which command was meant to be fired given the command argument, and fire it
         if (command.equalsIgnoreCase("raise")) {
-            if (!this.checkPermission("bounty.raise", commandSender)) return true;
+            if (!checkPermission("bounty.raise", commandSender)) return true;
             return bountyRaiseCommand(commandSender, args, false);
         }
 
         if (command.equalsIgnoreCase("silentraise")) {
-            if (!this.checkPermission("bounty.raise.silent", commandSender)) return true;
+            if (!checkPermission("bounty.raise.silent", commandSender)) return true;
             return bountyRaiseCommand(commandSender, args, true);
         }
 
         if (command.equalsIgnoreCase("reset")) {
-            if (!this.checkPermission("bounty.reset", commandSender)) return true;
+            if (!checkPermission("bounty.reset", commandSender)) return true;
             return bountyResetCommand(commandSender, args);
         }
 
         if (command.equalsIgnoreCase("list")) {
-            if (!this.checkPermission("bounty.bountylist", commandSender)) return true;
+            if (!checkPermission("bounty.bountylist", commandSender)) return true;
             return bountyListCommand(commandSender);
         }
 
+        if (command.equalsIgnoreCase("setrewardlimit")) {
+            if (!checkPermission("bounty.setrewardlimit", commandSender)) return true;
+            return setRewardLimitCommand(commandSender, args);
+        }
+
+
         if (command.equalsIgnoreCase("help")) {
-            if (!this.checkPermission("bounty.help", commandSender)) return true;
+            if (!checkPermission("bounty.help", commandSender)) return true;
             return helpCommand(commandSender);
         }
 
         commandSender.sendMessage("§cUnknown command. Use /bounty help for a list of available commands");
         return true;
+    }
+
+    /**
+     * Changes the configured reward limit for bounties.
+     * @param commandSender The sender of the command
+     * @param args The arguments of the command
+     * @return Boolean, feedback to the caller
+     */
+    private boolean setRewardLimitCommand(CommandSender commandSender, String[] args) {
+
+        if (args.length != 1) {
+            commandSender.sendMessage("§cUsage: /bounty setrewardlimit <amount>");
+            return true;
+        }
+
+        try {
+            // Changes the reward limit to the amount specified
+            BountySeekers.INTERNAL_CONFIGS.getConfig().set("reward-limit", Integer.parseInt(args[0]));
+            commandSender.sendMessage(BountySeekers.sendMessage(null, "Reward limit set to " + Integer.parseInt(args[0])));
+            return true;
+        }
+        catch (NumberFormatException e) {
+            // If the argument is not a number, send an error message
+            commandSender.sendMessage("Limit must be numeric.");
+            return true;
+        }
     }
 
     /**
@@ -145,10 +178,10 @@ public class PluginCommands implements CommandExecutor {
             return true;
         }
 
-        OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
+        SimplePlayer target = new SimplePlayer(args[0]);
         Player player = (Player) commandSender;
 
-        if (BountySeekers.UUID_CACHE.get(target.getUniqueId()) == null) {
+        if (BountySeekers.UUID_CACHE.getName(target.getUniqueId()) == null) {
             commandSender.sendMessage("§cThat player cannot found.");
             return true;
         }
@@ -174,7 +207,7 @@ public class PluginCommands implements CommandExecutor {
         }
 
         OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
-        if (BountySeekers.UUID_CACHE.get(target.getUniqueId()) == null) {
+        if (BountySeekers.UUID_CACHE.getName(target.getUniqueId()) == null) {
             commandSender.sendMessage("§cThat player cannot found.");
             return true;
         }
@@ -194,10 +227,11 @@ public class PluginCommands implements CommandExecutor {
     private boolean helpCommand(CommandSender commandSender) {
 
         commandSender.sendMessage(String.format("§e----- §c%s Command List§e-----", BountySeekers.PLUGIN_NAME));
-        commandSender.sendMessage("§e> §f/bounty list §7- §aDisplays a list of all the active bounties");
+        commandSender.sendMessage("§e> §f/bounty list §7-> Displays a list of all the active bounties");
         commandSender.sendMessage("§e> §f/bounty raise [target player] §7-> Raises a player's bounty.");
         commandSender.sendMessage("§e> §f/bounty silentraise [target player] §7-> Raises a player's bounty, hiding the benefactor's identity.");
         commandSender.sendMessage("§e> §f/bounty reset [target player] §7-> Resets a player's bounty.");
+        commandSender.sendMessage("§e> §f/bounty setrewardlimit <amount> §7-> Sets the reward limit for bounties.");
         commandSender.sendMessage("§e> §f/bounty help §7-> Displays this list of commands.");
 
         return true;

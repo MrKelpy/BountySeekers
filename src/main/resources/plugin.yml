@@ -28,3 +28,8 @@ commands:
     usage: /bounty reset <player>
     description: Resets the bounty for a player.
     permission: bounty.reset
+
+  bounty rewardlimit:
+    usage: /bounty setrewardlimit <amount>
+    description: Sets the maximum amount of rewards a player can receive for their bounty.
+    permission: bounty.setrewardlimit

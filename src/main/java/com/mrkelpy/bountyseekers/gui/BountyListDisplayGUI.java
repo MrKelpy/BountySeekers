@@ -59,7 +59,7 @@ public class BountyListDisplayGUI extends PagedGUI {
         super.onItemClick(event);
         if (event.getSlot() > this.storageSlots) return;
 
-        UUID playerUUID = UUID.fromString(BountySeekers.UUID_CACHE.get(event.getCurrentItem().getItemMeta().getDisplayName().substring(4)));
+        UUID playerUUID = BountySeekers.UUID_CACHE.getUUID(event.getCurrentItem().getItemMeta().getDisplayName().substring(4));
         String data = FileUtils.readFile(new File(this.bountiesDirectory, playerUUID + ".bounty"));
         new BountyDisplayGUI(this.player, SerializationUtils.itemStackArrayFromBase64(data)).openInventory();
     }
@@ -71,8 +71,8 @@ public class BountyListDisplayGUI extends PagedGUI {
     protected void goBack() {}
 
     /**
-     * Creates an ItemStack list
-     * @return
+     * Creates an ItemStack list representing all the currently available bounties.
+     * @return List<ItemStack> The list of ItemStacks representing the currently available bounties.
      */
     private List<ItemStack> makeBountyItemList() {
 
@@ -85,7 +85,7 @@ public class BountyListDisplayGUI extends PagedGUI {
             // Creates the base item representing the bounty
             UUID playerUUID = UUID.fromString(bountyFile.getName().replace(".bounty", ""));
 
-            String playername = BountySeekers.UUID_CACHE.get(playerUUID);
+            String playername = BountySeekers.UUID_CACHE.getName(playerUUID);
             ItemStack item = GUIUtils.createItemPlaceholder(Material.ARROW, "§e" + playername, Collections.singletonList("§7Click to view this bounty."), (short) 0);
 
             // Adds the item with the custom tag to the list, as a bukkit copy.
@@ -94,6 +94,5 @@ public class BountyListDisplayGUI extends PagedGUI {
 
         return bountyItemList;
     }
-
 }
 
