@@ -52,7 +52,7 @@ public class PluginCommands implements CommandExecutor {
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean checkPermission(String permission, CommandSender sender) {
-        if (sender.hasPermission("aos.all") || sender.isOp() || sender.hasPermission(permission))
+        if (sender.hasPermission("bounty.all") || sender.isOp() || sender.hasPermission(permission))
             return true;
 
         sender.sendMessage("§cYou do not have permission to use this command");
@@ -71,6 +71,8 @@ public class PluginCommands implements CommandExecutor {
     //supress unused return value
     @SuppressWarnings("UnusedReturnValue")
     private boolean parseCommands(CommandSender commandSender, String[] args) {
+
+        if (args.length < 1) return true;
 
         // Process the arguments and remove the first element
         String command = args[0];
@@ -100,7 +102,7 @@ public class PluginCommands implements CommandExecutor {
         }
 
         if (command.equalsIgnoreCase("setrewardlimit")) {
-            if (!checkPermission("bounty.setrewardlimit", commandSender)) return true;
+            if (!checkPermission("bounty.admin.setrewardlimit", commandSender)) return true;
             return setRewardLimitCommand(commandSender, args);
         }
 
@@ -129,6 +131,7 @@ public class PluginCommands implements CommandExecutor {
         try {
             // Changes the reward limit to the amount specified
             BountySeekers.INTERNAL_CONFIGS.getConfig().set("reward-limit", Integer.parseInt(args[0]));
+            BountySeekers.INTERNAL_CONFIGS.save();
             commandSender.sendMessage(BountySeekers.sendMessage(null, "Reward limit set to " + Integer.parseInt(args[0])));
             return true;
         }
@@ -237,7 +240,7 @@ public class PluginCommands implements CommandExecutor {
         }
 
         // Shows the admin commands help menu
-        else if (Objects.equals(menu, "admin") && commandSender.hasPermission("bounty.admin")) {
+        else if (Objects.equals(menu, "admin") && checkPermission("bounty.admin.help", commandSender)) {
             commandSender.sendMessage(String.format("§e----- §c%s Admin Command List§e-----", BountySeekers.PLUGIN_NAME));
             commandSender.sendMessage("§e> §f/bounty setrewardlimit <amount> §7-> Sets the reward limit for bounties.");
             commandSender.sendMessage("§e> §f/bounty help §7-> Displays this list of commands.");

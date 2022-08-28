@@ -12,9 +12,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * This class creates a GUI capable of raising a player's bounty intuitively.
@@ -60,21 +63,30 @@ public class BountyRaiseGUI extends ConfirmationGUI {
         for (int i = 0; this.storageSlots > i; i++) {
 
             // Prevents the player from raising the target's bounty over the maximum amount.
-            if (this.bounty.getRewards().size() >= rewardLimit && rewardLimit != -1) {
-                player.sendMessage(BountySeekers.sendMessage(null, "Some items were returned to you because the target has hit the maximum bounty size."));
+            if (this.inventory.getItem(i) != null && this.bounty.getRewards().size() >= rewardLimit && rewardLimit != -1) {
 
-                // If the bounty wasn't raised at all because the target doesn't hit the maximum size, stop the confirmation.
-                if (i == 0) {
-                    this.benefactor.getPlayer().closeInventory();
-                    return;
+                // Check if the item will be compressed, and if so, if the bounty rewards post-compression will overflow the limit.
+                if (!ItemStackUtils.willCompress(this.inventory.getItem(i), this.bounty.getRewards())) continue;
+
+                ArrayList<ItemStack> compressedOverflow = new ArrayList<>(this.bounty.getRewards());
+                compressedOverflow.add(this.inventory.getItem(i));
+
+                // If the bounty size doesn't overflow the reward limit, add it.
+                if (ItemStackUtils.compress(compressedOverflow).size() <= rewardLimit) {
+                    this.bounty.addReward(this.inventory.getItem(i));
+                    this.inventory.setItem(i, null);
                 }
 
-                break;
+                continue;
             }
 
             this.bounty.addReward(this.inventory.getItem(i));
             this.inventory.setItem(i, null);
         }
+
+        // Sends the "items returned" warning message in case there are still items left inside the GUI to be returned to the player.
+        if (Arrays.stream(this.inventory.getContents()).filter(Objects::nonNull).count() > 2)
+            player.sendMessage(BountySeekers.sendMessage(null, "Some items were returned to you because they would overflow the maximum reward limit for that target."));
 
         // Returns any leftover items to the player.
         for (int i = 0; this.storageSlots > i; i++) {
@@ -83,14 +95,14 @@ public class BountyRaiseGUI extends ConfirmationGUI {
             this.benefactor.getPlayer().getInventory().addItem(this.inventory.getItem(i));
             this.inventory.setItem(i, null);
         }
-
         this.bounty.save();
 
-        // Announces the bounty raise, hiding the benefactor if they're anonymous.
-        if (this.benefactor.toString() != null)
+        // Announces the bounty raise, incase it was raised, hiding the benefactor if they're anonymous.
+        if (this.benefactor.toString() != null && this.bounty.getAdditionCount() > 0)
             Bukkit.broadcastMessage(BountySeekers.sendMessage(null, this.benefactor.getPlayer().getName() + " has raised " + this.bounty.getTarget() + "'s bounty!"));
 
-        else { Bukkit.broadcastMessage(BountySeekers.sendMessage(null, "A player has raised " + this.bounty.getTarget() + "'s bounty!")); }
+        else if (this.benefactor.toString() == null && this.bounty.getAdditionCount() > 0)
+            Bukkit.broadcastMessage(BountySeekers.sendMessage(null, "A player has raised " + this.bounty.getTarget() + "'s bounty!"));
 
         // Unregisters the event handlers and closes the inventory so no items are returned.
         HandlerList.unregisterAll(this);
@@ -122,7 +134,7 @@ public class BountyRaiseGUI extends ConfirmationGUI {
     @EventHandler
     public void onItemClick(InventoryClickEvent event) {
 
-        if (event.getSlot() > this.storageSlots)
+        if (event.getRawSlot() > this.storageSlots && event.getRawSlot() < this.inventory.getSize())
             super.onItemClick(event);
     }
 

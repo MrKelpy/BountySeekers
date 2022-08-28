@@ -61,8 +61,6 @@ public abstract class ConfirmationGUI implements Listener {
         if (event.getClickedInventory().equals(this.inventory)) event.setCancelled(true);
         else return;
 
-        if (event.isShiftClick()) event.setCancelled(true);
-
         if (event.getSlot() == this.storageSlots + 1) this.onCancel((Player) event.getWhoClicked());
         if (event.getSlot() == this.storageSlots + 9) this.onConfirm((Player) event.getWhoClicked());
     }

@@ -10,9 +10,20 @@ commands:
     usage: /bounty <command>
     description: Master command.
 
+  bounty help:
+    usage: /bounty help
+    description: Displays the help menu.
+    permission: bounty.help
+
+  bounty admin help:
+    usage: /bounty help
+    description: Displays the help menu.
+    permission: bounty.admin.help
+
   bounty list:
     usage: /bounty list
     description: Displays the list of active bounties.
+    permission: bounty.list
 
   bounty raise:
     usage: /bounty raise <player>
@@ -32,4 +43,4 @@ commands:
   bounty rewardlimit:
     usage: /bounty setrewardlimit <amount>
     description: Sets the maximum amount of rewards a player can receive for their bounty.
-    permission: bounty.setrewardlimit
+    permission: bounty.admin.setrewardlimit

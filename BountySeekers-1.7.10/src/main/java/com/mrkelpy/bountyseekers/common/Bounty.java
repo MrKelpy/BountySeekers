@@ -1,6 +1,7 @@
 package com.mrkelpy.bountyseekers.common;
 
 import com.mrkelpy.bountyseekers.BountySeekers;
+import com.mrkelpy.bountyseekers.gui.ItemStackUtils;
 import com.mrkelpy.bountyseekers.utils.FileUtils;
 import com.mrkelpy.bountyseekers.utils.SerializationUtils;
 import jdk.nashorn.internal.objects.annotations.Getter;
@@ -33,6 +34,11 @@ public class Bounty {
     private final List<ItemStack> rewards;
 
     /**
+     * The amount of rewards to the bounty since the object initialization
+     */
+    private int raisedStackCount;
+
+    /**
      * The .bounty file that holds the bounty information
      */
     private final File bountyFile;
@@ -52,16 +58,22 @@ public class Bounty {
 
         ItemStack[] rewardArray = bountyInformation != null ? SerializationUtils.itemStackArrayFromBase64(bountyInformation) : null;
         this.rewards = bountyInformation != null && rewardArray != null ? new ArrayList<>(Arrays.asList(rewardArray)): new ArrayList<>();
+        this.raisedStackCount = 0;
     }
 
     @Getter
     public String getTarget() {
-        return target;
+        return this.target;
     }
 
     @Getter
     public List<ItemStack> getRewards() {
-        return rewards;
+        return this.rewards;
+    }
+    
+    @Getter
+    public int getAdditionCount() {
+        return this.raisedStackCount;
     }
 
     /**
@@ -69,8 +81,11 @@ public class Bounty {
      * @param reward The reward to add to the bounty.
      */
     public void addReward(ItemStack reward) {
-        if (reward != null && reward.getType() != Material.AIR)
+        
+        if (reward != null && reward.getType() != Material.AIR) {
             this.rewards.add(reward);
+            this.raisedStackCount += 1;
+        }
     }
 
     /**
@@ -106,61 +121,9 @@ public class Bounty {
      * Save the bounty to the .bounty file.
      */
     public void save() {
-        List<ItemStack> compressedRewards = this.compress(this.rewards);
+        List<ItemStack> compressedRewards = ItemStackUtils.compress(this.rewards);
         FileUtils.writeFile(this.bountyFile, SerializationUtils.itemStackArrayToBase64(compressedRewards.toArray(new ItemStack[0])));
         BountySeekers.UUID_CACHE.set(this.targetUUID, this.target);
-    }
-
-    /**
-     * Iterates over every item in the given List, tracks the amount of items in each,
-     * and generates a compressed list of ItemStacks.
-     * @param list The list to compress.
-     * @return The compressed list.
-     */
-    public List<ItemStack> compress(List<ItemStack> list) {
-        Map<ItemStack, Integer> generationMap = new HashMap<>();  // The map holding the stacks and their amount.
-
-        // Iterate over every item in the list and count the amount of each.
-        for (ItemStack item : list) {
-
-            // Creates a pivot ItemStack to use for comparison.
-            ItemStack pivot = item.clone();
-            pivot.setAmount(1);
-
-            if (generationMap.containsKey(pivot))
-                generationMap.put(pivot, generationMap.get(pivot) + item.getAmount());
-
-            else { generationMap.put(pivot, item.getAmount()); }
-        }
-
-        // Generates the compressed ItemStacks given the generationMap.
-        List<ItemStack> compressedList = new ArrayList<>();
-        for (ItemStack item : generationMap.keySet()) {
-
-            do {
-                int amount = item.getMaxStackSize();  // Defaults the itemstack amount to the max stack size.
-
-                // If the amount left is greater than the stack size, diminish the amount left by the stack size.
-                if (generationMap.get(item) > amount)
-                    generationMap.put(item, generationMap.get(item) - amount);
-
-                else {
-                    // If not, change the amount to what's left, and do the same.
-                    amount = generationMap.get(item);
-                    generationMap.put(item, generationMap.get(item) - amount);
-                }
-
-                // Create a clone of the itemstack, change the item count, and add it to the compressed list.
-                ItemStack itemClone = item.clone();
-                itemClone.setAmount(amount);
-                compressedList.add(itemClone);
-
-            }
-            // Keep repeating this until the amount of items left is 0.
-            while (generationMap.get(item) != 0);
-        }
-
-        return compressedList;
     }
 
 }

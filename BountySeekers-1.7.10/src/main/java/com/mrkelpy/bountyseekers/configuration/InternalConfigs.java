@@ -32,6 +32,14 @@ public class InternalConfigs {
     }
 
     /**
+     * Saves the config into memory.
+     */
+    public void save() {
+        try { this.config.save(this.configFile); }
+        catch (Exception e) { e.printStackTrace(); }
+    }
+
+    /**
      * Saves the default data values to the file.
      */
     private void addDefaults() {
@@ -40,14 +48,6 @@ public class InternalConfigs {
             this.getConfig().set("reward-limit", -1);
 
         this.save();
-    }
-
-    /**
-     * Saves the config into memory.
-     */
-    private void save() {
-        try { this.config.save(this.configFile); }
-        catch (Exception e) { e.printStackTrace(); }
     }
 
 }
