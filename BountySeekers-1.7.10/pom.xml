@@ -15,12 +15,6 @@
                 <version>3.3.0</version>
                 <configuration>
                     <minimizeJar>true</minimizeJar>
-                    <relocations>
-                        <relocation>
-                            <pattern>com.google.gson</pattern>
-                            <shadedPattern>com.mrkelpy.aosplayermanager</shadedPattern>
-                        </relocation>
-                    </relocations>
                 </configuration>
                 <executions>
                     <execution>
@@ -42,11 +36,6 @@
             <groupId>com.github.azbh111</groupId>
             <artifactId>craftbukkit-1.7.10</artifactId>
             <version>R</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.9.0</version>
         </dependency>
     </dependencies>
 

@@ -6,8 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="BountySeekers-1.7.10" />
+        <module name="BountySeekers" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="BountySeekers-1.7.10" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

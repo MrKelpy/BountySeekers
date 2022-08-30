@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="BountySeekers-1.14:jar">
+    <output-path>$USER_HOME$/Desktop/Base/Minecraft/Servers/BountySeekers/1.14/server_files/plugins</output-path>
+    <root id="archive" name="BountySeekers-1.14.jar">
+      <element id="module-output" name="BountySeekers-1.14" />
+      <element id="library" level="project" name="Maven: com.github.azbh111:craftbukkit-1.14.3:R" />
+    </root>
+  </artifact>
+</component>
