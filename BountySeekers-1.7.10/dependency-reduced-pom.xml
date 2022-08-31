@@ -19,12 +19,6 @@
         </executions>
         <configuration>
           <minimizeJar>true</minimizeJar>
-          <relocations>
-            <relocation>
-              <pattern>com.google.gson</pattern>
-              <shadedPattern>com.mrkelpy.aosplayermanager</shadedPattern>
-            </relocation>
-          </relocations>
         </configuration>
       </plugin>
     </plugins>

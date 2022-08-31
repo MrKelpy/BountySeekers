@@ -17,7 +17,7 @@ commands:
     permission: bounty.help
 
   bounty admin help:
-    usage: /bounty help
+    usage: /bounty help admin
     description: Displays the help menu.
     permission: bounty.admin.help
 

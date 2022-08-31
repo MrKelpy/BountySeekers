@@ -1,7 +1,6 @@
 package com.mrkelpy.bountyseekers.common;
 
 import com.mrkelpy.bountyseekers.BountySeekers;
-import jdk.nashorn.internal.objects.annotations.Getter;
 
 import java.util.UUID;
 
@@ -42,13 +41,10 @@ public class SimplePlayer {
         this(BountySeekers.UUID_CACHE.getName(uuid), uuid);
     }
 
-
-    @Getter
     public String getName() {
         return name;
     }
 
-    @Getter
     public UUID getUniqueId() {
         return uuid;
     }

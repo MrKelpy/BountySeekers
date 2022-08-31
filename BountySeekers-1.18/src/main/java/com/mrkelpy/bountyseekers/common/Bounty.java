@@ -4,7 +4,6 @@ import com.mrkelpy.bountyseekers.BountySeekers;
 import com.mrkelpy.bountyseekers.utils.ItemStackUtils;
 import com.mrkelpy.bountyseekers.utils.FileUtils;
 import com.mrkelpy.bountyseekers.utils.SerializationUtils;
-import jdk.nashorn.internal.objects.annotations.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -61,17 +60,14 @@ public class Bounty {
         this.raisedStackCount = 0;
     }
 
-    @Getter
     public String getTarget() {
         return this.target;
     }
 
-    @Getter
     public List<ItemStack> getRewards() {
         return this.rewards;
     }
     
-    @Getter
     public int getAdditionCount() {
         return this.raisedStackCount;
     }
