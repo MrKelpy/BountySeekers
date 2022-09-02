@@ -1,9 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="BountySeekers-1.18:jar">
-    <output-path>$USER_HOME$/Desktop/Base/Minecraft/Servers/BountySeekers/1.18.2/server_files/plugins</output-path>
-    <root id="archive" name="BountySeekers-1.18.jar">
-      <element id="module-output" name="BountySeekers-1.18" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/commons-lang/commons-lang/2.6/commons-lang-2.6.jar" path-in-jar="/" />
-    </root>
-  </artifact>
-</component>

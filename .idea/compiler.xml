@@ -6,8 +6,42 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="BountySeekers" />
+        <module name="Spigot_1_12" />
+        <module name="Spigot_1_13" />
+        <module name="Spigot_1_10" />
+        <module name="Spigot_1_11" />
+        <module name="Crucible_1_7_10" />
+        <module name="CNMS" />
+        <module name="Commons" />
+        <module name="Spigot_1_16" />
+        <module name="Spigot_1_17" />
+        <module name="Spigot_1_9" />
+        <module name="Spigot_1_14" />
+        <module name="Spigot_1_15" />
+        <module name="Spigot_1_7" />
+        <module name="BountySeekers-Crucible_1_7_10" />
+        <module name="Spigot_1_8" />
+        <module name="Spigot_1_18" />
+        <module name="Spigot_1_19" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="BountySeekers (1)" target="1.8" />
+      <module name="BountySeekers (2)" target="1.8" />
+      <module name="BountySeekers-Crucible_1_7_10" target="1.8" />
+      <module name="BountySeekers_1.10" target="1.8" />
+      <module name="BountySeekers_1.11" target="1.8" />
+      <module name="BountySeekers_1.12" target="1.8" />
+      <module name="BountySeekers_1.13" target="1.8" />
+      <module name="BountySeekers_1.14" target="1.8" />
+      <module name="BountySeekers_1.15" target="1.8" />
+      <module name="BountySeekers_1.16" target="1.8" />
+      <module name="BountySeekers_1.18" target="1.8" />
+      <module name="BountySeekers_1.19" target="1.8" />
+      <module name="BountySeekers_1.8" target="1.8" />
+      <module name="BountySeekers_1.9" target="9" />
+      <module name="BountySeekers_Crucible_1.7.10" target="1.8" />
+      <module name="Spigot_1_7_10" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
