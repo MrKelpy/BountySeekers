@@ -1,9 +1,10 @@
 package com.mrkelpy.bountyseekers.v1_8.gui;
 
+import com.mrkelpy.bountyseekers.commons.configuration.UUIDCache;
+import com.mrkelpy.bountyseekers.commons.gui.PagedGUI;
+import com.mrkelpy.bountyseekers.commons.utils.FileUtils;
+import com.mrkelpy.bountyseekers.commons.utils.GUIUtils;
 import com.mrkelpy.bountyseekers.v1_8.BountySeekers;
-import com.mrkelpy.bountyseekers.v1_8.utils.FileUtils;
-import com.mrkelpy.bountyseekers.v1_8.utils.GUIUtils;
-import com.mrkelpy.bountyseekers.v1_8.utils.SerializationUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,7 +48,6 @@ public class BountyListDisplayGUI extends PagedGUI {
         this.player.openInventory(this.inventory);
     }
 
-
     /**
      * Displays the selected bounty.
      * @param event InventoryClickEvent
@@ -59,9 +58,9 @@ public class BountyListDisplayGUI extends PagedGUI {
         super.onItemClick(event);
         if (event.getSlot() > this.storageSlots) return;
 
-        UUID playerUUID = BountySeekers.UUID_CACHE.getUUID(event.getCurrentItem().getItemMeta().getDisplayName().substring(4));
+        UUID playerUUID = UUIDCache.INSTANCE.getUUID(event.getCurrentItem().getItemMeta().getDisplayName().substring(4));
         String data = FileUtils.readFile(new File(this.bountiesDirectory, playerUUID + ".bounty"));
-        new BountyDisplayGUI(this.player, SerializationUtils.itemStackArrayFromBase64(data)).openInventory();
+        new BountyDisplayGUI(this.player, BountySeekers.SERIALIZER.itemStackArrayFromBase64(data)).openInventory();
     }
 
     /**
@@ -85,8 +84,8 @@ public class BountyListDisplayGUI extends PagedGUI {
             // Creates the base item representing the bounty
             UUID playerUUID = UUID.fromString(bountyFile.getName().replace(".bounty", ""));
 
-            String playername = BountySeekers.UUID_CACHE.getName(playerUUID);
-            ItemStack item = GUIUtils.createItemPlaceholder(Material.ARROW, "§e" + playername, Collections.singletonList("§7Click to view this bounty."), (short) 0);
+            String playername = UUIDCache.INSTANCE.getName(playerUUID);
+            ItemStack item = GUIUtils.createItemPlaceholder(Material.getMaterial("ARROW"), "§e" + playername);
 
             // Adds the item with the custom tag to the list, as a bukkit copy.
             bountyItemList.add(item);

@@ -1,6 +1,6 @@
-package com.mrkelpy.bountyseekers.v1_7.events;
+package com.mrkelpy.bountyseekers.commons.events;
 
-import com.mrkelpy.bountyseekers.v1_7.BountySeekers;
+import com.mrkelpy.bountyseekers.commons.configuration.UUIDCache;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -13,7 +13,7 @@ public class PlayerJoinListener implements Listener {
      */
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        BountySeekers.UUID_CACHE.set(event.getPlayer().getUniqueId(), event.getPlayer().getName());
+        UUIDCache.INSTANCE.set(event.getPlayer().getUniqueId(), event.getPlayer().getName());
     }
 
 }

@@ -1,6 +1,6 @@
 package com.mrkelpy.bountyseekers.reflectors.v1_7;
 
-import com.mrkelpy.bountyseekers.interfaces.NMSReflector;
+import com.mrkelpy.bountyseekers.interfaces.INMSReflector;
 import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Bukkit;
 
@@ -12,7 +12,7 @@ import java.lang.reflect.InvocationTargetException;
  * This class handles the needed classes related to NMS using reflection.<br>
  * <font color="yellow"> This class is compatible with Minecraft Version 1.7.x</font>
  */
-public class ReNMS implements NMSReflector {
+public class ReNMS implements INMSReflector {
 
     public final static ReNMS INSTANCE = new ReNMS();
 
@@ -37,24 +37,24 @@ public class ReNMS implements NMSReflector {
     }
 
     @Override
-    public NMSReflector.NBTTagCompound getNBTTagCompound() {
+    public INMSReflector.NBTTagCompound getNBTTagCompound() {
         return INSTANCE.new NBTTagCompound();
     }
 
     @Override
-    public NMSReflector.NBTCompressedStreamTools getNBTCompressedStreamTools() {
+    public INMSReflector.NBTCompressedStreamTools getNBTCompressedStreamTools() {
         return INSTANCE.new NBTCompressedStreamTools();
     }
 
     @Override
-    public NMSReflector.ItemStack getItemStack() {
+    public INMSReflector.ItemStack getItemStack() {
         return INSTANCE.new ItemStack();
     }
 
     /**
      * This class holds every supported method for the reflected NBTTagCompound class.
      */
-    public class NBTTagCompound extends NMSReflector.NBTTagCompound {
+    public class NBTTagCompound extends INMSReflector.NBTTagCompound {
 
         public final Class<?> CLASS = getNMSClass("NBTTagCompound");
 
@@ -94,7 +94,7 @@ public class ReNMS implements NMSReflector {
      * This class holds every supported method for the reflected NBTCompressionStreamTools class.
      */
     @SuppressWarnings("InnerClassMayBeStatic")
-    public class NBTCompressedStreamTools extends NMSReflector.NBTCompressedStreamTools {
+    public class NBTCompressedStreamTools extends INMSReflector.NBTCompressedStreamTools {
 
         public final Class<?> CLASS =  ReNMS.INSTANCE.getNMSClass("NBTCompressedStreamTools");
 
@@ -135,7 +135,7 @@ public class ReNMS implements NMSReflector {
      * This class holds every supported method for the reflected ItemStack class.
      */
     @SuppressWarnings("InnerClassMayBeStatic")
-    public class ItemStack extends NMSReflector.ItemStack {
+    public class ItemStack extends INMSReflector.ItemStack {
 
         public final Class<?> CLASS =  ReNMS.INSTANCE.getNMSClass("ItemStack");
 

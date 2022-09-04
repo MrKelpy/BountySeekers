@@ -1,5 +1,6 @@
 package com.mrkelpy.bountyseekers.vCR1_7_10.gui;
 
+import com.mrkelpy.bountyseekers.commons.configuration.UUIDCache;
 import com.mrkelpy.bountyseekers.commons.gui.PagedGUI;
 import com.mrkelpy.bountyseekers.commons.utils.FileUtils;
 import com.mrkelpy.bountyseekers.commons.utils.GUIUtils;
@@ -57,7 +58,7 @@ public class BountyListDisplayGUI extends PagedGUI {
         super.onItemClick(event);
         if (event.getSlot() > this.storageSlots) return;
 
-        UUID playerUUID = BountySeekers.UUID_CACHE.getUUID(event.getCurrentItem().getItemMeta().getDisplayName().substring(4));
+        UUID playerUUID = UUIDCache.INSTANCE.getUUID(event.getCurrentItem().getItemMeta().getDisplayName().substring(4));
         String data = FileUtils.readFile(new File(this.bountiesDirectory, playerUUID + ".bounty"));
         new BountyDisplayGUI(this.player, BountySeekers.SERIALIZER.itemStackArrayFromBase64(data)).openInventory();
     }
@@ -83,7 +84,7 @@ public class BountyListDisplayGUI extends PagedGUI {
             // Creates the base item representing the bounty
             UUID playerUUID = UUID.fromString(bountyFile.getName().replace(".bounty", ""));
 
-            String playername = BountySeekers.UUID_CACHE.getName(playerUUID);
+            String playername = UUIDCache.INSTANCE.getName(playerUUID);
             ItemStack item = GUIUtils.createItemPlaceholder(Material.getMaterial("ARROW"), "§e" + playername);
 
             // Adds the item with the custom tag to the list, as a bukkit copy.

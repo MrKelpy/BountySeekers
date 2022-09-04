@@ -7,10 +7,10 @@ import org.bukkit.inventory.ItemStack;
  * version of the Reflection classes based on the server version. Every reflection class
  * should implement either this interface or the ReNMS interface.
  */
-public interface BukkitReflector {
+public interface IBukkitReflector {
 
     Class<?> getBukkitClass(String name);
-    BukkitReflector.CraftItemStack getCraftItemStack();
+    IBukkitReflector.CraftItemStack getCraftItemStack();
 
     abstract class CraftItemStack {
 

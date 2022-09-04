@@ -3,12 +3,12 @@ package com.mrkelpy.bountyseekers.interfaces;
 import java.io.DataInputStream;
 import java.io.DataOutput;
 
-public interface NMSReflector {
+public interface INMSReflector {
 
     Class<?> getNMSClass(String name);
-    NMSReflector.NBTTagCompound getNBTTagCompound();
-    NMSReflector.NBTCompressedStreamTools getNBTCompressedStreamTools();
-    NMSReflector.ItemStack getItemStack();
+    INMSReflector.NBTTagCompound getNBTTagCompound();
+    INMSReflector.NBTCompressedStreamTools getNBTCompressedStreamTools();
+    INMSReflector.ItemStack getItemStack();
 
 
     abstract class NBTTagCompound {

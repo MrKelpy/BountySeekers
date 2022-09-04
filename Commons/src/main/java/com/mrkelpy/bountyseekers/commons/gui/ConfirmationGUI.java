@@ -1,6 +1,7 @@
 package com.mrkelpy.bountyseekers.commons.gui;
 
 import com.mrkelpy.bountyseekers.commons.utils.GUIUtils;
+import com.mrkelpy.bountyseekers.commons.utils.PluginConstants;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -56,10 +57,10 @@ public abstract class ConfirmationGUI implements Listener {
      */
     @EventHandler
     public void onItemClick(InventoryClickEvent event) {
-        if (event.isShiftClick()) event.setCancelled(true);
         if (event.getInventory().equals(this.inventory)) event.setCancelled(true);
         else return;
 
+        if (event.isShiftClick()) event.setCancelled(true);
         if (event.getSlot() == this.storageSlots + 1) this.onCancel((Player) event.getWhoClicked());
         if (event.getSlot() == this.storageSlots + 9) this.onConfirm((Player) event.getWhoClicked());
     }
@@ -103,10 +104,9 @@ public abstract class ConfirmationGUI implements Listener {
 
     /**
      * Registers all event listeners used by an instance of this GUI.
-     * @param pluginName The name of the Plugin to register the listeners to.
      */
     private void registerListeners() {
-        Plugin plugin = Bukkit.getPluginManager().getPlugin("BountySeekers");
+        Plugin plugin = Bukkit.getPluginManager().getPlugin(PluginConstants.PLUGIN_NAME);
         assert plugin != null;
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }

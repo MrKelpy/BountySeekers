@@ -1,13 +1,13 @@
-package com.mrkelpy.bountyseekers.v1_7.gui;
+package com.mrkelpy.bountyseekers.commons.gui;
 
 import com.mrkelpy.bountyseekers.commons.carriers.Benefactor;
 import com.mrkelpy.bountyseekers.commons.carriers.Bounty;
 import com.mrkelpy.bountyseekers.commons.carriers.SimplePlayer;
-import com.mrkelpy.bountyseekers.commons.gui.ConfirmationGUI;
+import com.mrkelpy.bountyseekers.commons.configuration.InternalConfigs;
+import com.mrkelpy.bountyseekers.commons.enums.CompatibilityMode;
+import com.mrkelpy.bountyseekers.commons.utils.ChatUtils;
 import com.mrkelpy.bountyseekers.commons.utils.ItemStackUtils;
-import com.mrkelpy.bountyseekers.reflectors.v1_7.ReBukkit;
-import com.mrkelpy.bountyseekers.reflectors.v1_7.ReNMS;
-import com.mrkelpy.bountyseekers.v1_7.BountySeekers;
+import com.mrkelpy.bountyseekers.commons.utils.PluginConstants;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,15 +27,15 @@ import java.util.Objects;
  */
 public class BountyRaiseGUI extends ConfirmationGUI {
 
-    private final Bounty<ReBukkit, ReNMS> bounty;
+    private final Bounty bounty;
     private final Benefactor benefactor;
 
     /**
      * Main constructor for the ConfirmationGUI class.
      */
-    public BountyRaiseGUI(SimplePlayer target, Benefactor benefactor) {
+    public BountyRaiseGUI(SimplePlayer target, Benefactor benefactor, CompatibilityMode compatibility) {
         super("Raise " + target.getName() + "'s Bounty", 27);
-        this.bounty = new Bounty<>(target.getUniqueId());
+        this.bounty = new Bounty(target.getUniqueId(), compatibility);
         this.benefactor = benefactor;
     }
 
@@ -60,7 +60,7 @@ public class BountyRaiseGUI extends ConfirmationGUI {
             return;
         }
 
-        int rewardLimit = BountySeekers.INTERNAL_CONFIGS.getConfig().getInt("reward-limit");
+        int rewardLimit = InternalConfigs.INSTANCE.getConfig().getInt("reward-limit");
 
         // Adds all the rewards inside the GUI to the bounty, and adds the benefactor.
         for (int i = 0; this.storageSlots > i; i++) {
@@ -89,7 +89,7 @@ public class BountyRaiseGUI extends ConfirmationGUI {
 
         // Sends the "items returned" warning message in case there are still items left inside the GUI to be returned to the player.
         if (Arrays.stream(this.inventory.getContents()).filter(Objects::nonNull).count() > 2)
-            player.sendMessage(BountySeekers.sendMessage(null, "Some items were returned to you because they would overflow the maximum reward limit for that target."));
+            player.sendMessage(ChatUtils.sendMessage(null, "Some items were returned to you because they would overflow the maximum reward limit for that target."));
 
         // Returns any leftover items to the player.
         for (int i = 0; this.storageSlots > i; i++) {
@@ -102,10 +102,10 @@ public class BountyRaiseGUI extends ConfirmationGUI {
 
         // Announces the bounty raise, incase it was raised, hiding the benefactor if they're anonymous.
         if (this.benefactor.toString() != null && this.bounty.getAdditionCount() > 0)
-            Bukkit.broadcastMessage(BountySeekers.sendMessage(null, this.benefactor.getPlayer().getName() + " has raised " + this.bounty.getTarget() + "'s bounty!"));
+            Bukkit.broadcastMessage(ChatUtils.sendMessage(null, this.benefactor.getPlayer().getName() + " has raised " + this.bounty.getTarget() + "'s bounty!"));
 
         else if (this.benefactor.toString() == null && this.bounty.getAdditionCount() > 0)
-            Bukkit.broadcastMessage(BountySeekers.sendMessage(null, "A player has raised " + this.bounty.getTarget() + "'s bounty!"));
+            Bukkit.broadcastMessage(ChatUtils.sendMessage(null, "A player has raised " + this.bounty.getTarget() + "'s bounty!"));
 
         // Unregisters the event handlers and closes the inventory so no items are returned.
         HandlerList.unregisterAll(this);
@@ -125,7 +125,7 @@ public class BountyRaiseGUI extends ConfirmationGUI {
         this.benefactor.getPlayer().closeInventory();
 
         Bukkit.getScheduler().runTaskLater(
-                Bukkit.getPluginManager().getPlugin(BountySeekers.PLUGIN_NAME),
+                Bukkit.getPluginManager().getPlugin(PluginConstants.PLUGIN_NAME),
                 () -> this.benefactor.getPlayer().getInventory().setContents(this.benefactor.getInventory().getContents()), 2L);
     }
 
@@ -164,8 +164,8 @@ public class BountyRaiseGUI extends ConfirmationGUI {
     @Override
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
-        super.onInventoryClose(event);
-        this.onCancel((Player) event.getPlayer());
+        if (event.getInventory().equals(this.inventory))
+            this.onCancel((Player) event.getPlayer());
     }
 
     /**

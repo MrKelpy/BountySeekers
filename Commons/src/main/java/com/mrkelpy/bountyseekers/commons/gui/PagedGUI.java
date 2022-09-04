@@ -80,10 +80,10 @@ public abstract class PagedGUI implements Listener {
      */
     @EventHandler
     public void onItemClick(InventoryClickEvent event) {
-        if (event.isShiftClick()) event.setCancelled(true);
         if (event.getInventory().equals(this.inventory)) event.setCancelled(true);
         else return;
 
+        if (event.isShiftClick()) event.setCancelled(true);
         if (event.getSlot() == this.storageSlots + 9) this.sendToPage(this.page + 1);
         if (event.getSlot() == this.storageSlots + 1) this.sendToPage(this.page - 1);
         if (event.getSlot() == this.storageSlots + 5) this.goBack();

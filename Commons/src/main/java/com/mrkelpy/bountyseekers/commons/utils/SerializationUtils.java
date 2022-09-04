@@ -1,8 +1,8 @@
 package com.mrkelpy.bountyseekers.commons.utils;
 
 import com.mrkelpy.bountyseekers.commons.enums.CompatibilityMode;
-import com.mrkelpy.bountyseekers.interfaces.BukkitReflector;
-import com.mrkelpy.bountyseekers.interfaces.NMSReflector;
+import com.mrkelpy.bountyseekers.interfaces.IBukkitReflector;
+import com.mrkelpy.bountyseekers.interfaces.INMSReflector;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
@@ -19,10 +19,10 @@ import java.math.BigInteger;
 @SuppressWarnings("unused")
 public class SerializationUtils {
 
-    private final BukkitReflector.CraftItemStack RCraftItemStack;
-    private final NMSReflector.ItemStack RItemStack;
-    private final NMSReflector.NBTTagCompound RNBTTagCompound;
-    private final NMSReflector.NBTCompressedStreamTools RNBTCompressedStreamTools;
+    private final IBukkitReflector.CraftItemStack RCraftItemStack;
+    private final INMSReflector.ItemStack RItemStack;
+    private final INMSReflector.NBTTagCompound RNBTTagCompound;
+    private final INMSReflector.NBTCompressedStreamTools RNBTCompressedStreamTools;
 
     /**
      * Main constructor for the SerializationUtils class. This constructor obtains the Bukkit and NMS reflectors
@@ -30,8 +30,8 @@ public class SerializationUtils {
      * @param compatibilityMode The compatibility mode enum to use for the SerializationUtils object.
      */
     public SerializationUtils(CompatibilityMode compatibilityMode) {
-        BukkitReflector bukkitReflector = compatibilityMode.getBukkitReflector();
-        NMSReflector nmsReflector = compatibilityMode.getNMSReflector();
+        IBukkitReflector bukkitReflector = compatibilityMode.getBukkitReflector();
+        INMSReflector nmsReflector = compatibilityMode.getNMSReflector();
 
         this.RCraftItemStack = bukkitReflector.getCraftItemStack();
         this.RItemStack = nmsReflector.getItemStack();

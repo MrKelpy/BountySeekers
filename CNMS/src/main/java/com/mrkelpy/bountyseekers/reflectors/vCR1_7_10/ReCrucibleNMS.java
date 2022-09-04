@@ -1,6 +1,6 @@
 package com.mrkelpy.bountyseekers.reflectors.vCR1_7_10;
 
-import com.mrkelpy.bountyseekers.interfaces.NMSReflector;
+import com.mrkelpy.bountyseekers.interfaces.INMSReflector;
 import org.apache.commons.lang.ObjectUtils;
 
 import java.io.DataInputStream;
@@ -11,7 +11,7 @@ import java.lang.reflect.InvocationTargetException;
  * This class handles the needed classes related to NMS using reflection.<br>
  * <font color="yellow"> This class is compatible with Crucible version 1.7.10, and uses the MCP Mappings.</font>
  */
-public class ReCrucibleNMS implements NMSReflector {
+public class ReCrucibleNMS implements INMSReflector {
 
     public final static ReCrucibleNMS INSTANCE = new ReCrucibleNMS();
 
@@ -36,24 +36,24 @@ public class ReCrucibleNMS implements NMSReflector {
     }
 
     @Override
-    public NMSReflector.NBTTagCompound getNBTTagCompound() {
+    public INMSReflector.NBTTagCompound getNBTTagCompound() {
         return INSTANCE.new NBTTagCompound();
     }
 
     @Override
-    public NMSReflector.NBTCompressedStreamTools getNBTCompressedStreamTools() {
+    public INMSReflector.NBTCompressedStreamTools getNBTCompressedStreamTools() {
         return INSTANCE.new NBTCompressedStreamTools();
     }
 
     @Override
-    public NMSReflector.ItemStack getItemStack() {
+    public INMSReflector.ItemStack getItemStack() {
         return INSTANCE.new ItemStack();
     }
 
     /**
      * This class holds every supported method for the reflected NBTTagCompound class.
      */
-    public class NBTTagCompound extends NMSReflector.NBTTagCompound {
+    public class NBTTagCompound extends INMSReflector.NBTTagCompound {
 
         public final Class<?> CLASS = getNMSClass("nbt.NBTTagCompound");
 
@@ -92,7 +92,7 @@ public class ReCrucibleNMS implements NMSReflector {
     /**
      * This class holds every supported method for the reflected NBTCompressionStreamTools class.
      */
-    public class NBTCompressedStreamTools extends NMSReflector.NBTCompressedStreamTools {
+    public class NBTCompressedStreamTools extends INMSReflector.NBTCompressedStreamTools {
 
         public final Class<?> CLASS = getNMSClass("nbt.CompressedStreamTools");
 
@@ -132,7 +132,7 @@ public class ReCrucibleNMS implements NMSReflector {
     /**
      * This class holds every supported method for the reflected ItemStack class.
      */
-    public class ItemStack extends NMSReflector.ItemStack {
+    public class ItemStack extends INMSReflector.ItemStack {
 
         public final Class<?> CLASS = getNMSClass("item.ItemStack");
 

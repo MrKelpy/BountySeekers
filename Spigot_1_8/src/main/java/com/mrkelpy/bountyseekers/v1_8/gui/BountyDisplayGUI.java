@@ -1,5 +1,6 @@
 package com.mrkelpy.bountyseekers.v1_8.gui;
 
+import com.mrkelpy.bountyseekers.commons.gui.PagedGUI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

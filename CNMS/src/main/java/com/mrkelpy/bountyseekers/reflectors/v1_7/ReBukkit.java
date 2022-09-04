@@ -1,6 +1,6 @@
 package com.mrkelpy.bountyseekers.reflectors.v1_7;
 
-import com.mrkelpy.bountyseekers.interfaces.BukkitReflector;
+import com.mrkelpy.bountyseekers.interfaces.IBukkitReflector;
 import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
  * This class implements reflections for any needed bukkit methods. <br>
  * <font color="yellow"> This class is compatible with Minecraft Version 1.7.x</font>
  */
-public class ReBukkit implements BukkitReflector {
+public class ReBukkit implements IBukkitReflector {
 
     public static final ReBukkit INSTANCE = new ReBukkit();
 
@@ -33,7 +33,7 @@ public class ReBukkit implements BukkitReflector {
     }
 
     @Override
-    public BukkitReflector.CraftItemStack getCraftItemStack() {
+    public IBukkitReflector.CraftItemStack getCraftItemStack() {
         return INSTANCE.new CraftItemStack();
     }
 
@@ -41,7 +41,7 @@ public class ReBukkit implements BukkitReflector {
      * This class holds every supported method for the reflected CraftItemStack class.
      */
     @SuppressWarnings("InnerClassMayBeStatic")
-    public class CraftItemStack extends BukkitReflector.CraftItemStack {
+    public class CraftItemStack extends IBukkitReflector.CraftItemStack {
 
         private final Class<?> CLASS = ReBukkit.INSTANCE.getBukkitClass("inventory.CraftItemStack");
 
