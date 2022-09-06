@@ -7,14 +7,16 @@ import com.mrkelpy.bountyseekers.commons.configuration.InternalConfigs;
 import com.mrkelpy.bountyseekers.commons.enums.CompatibilityMode;
 import com.mrkelpy.bountyseekers.commons.utils.ChatUtils;
 import com.mrkelpy.bountyseekers.commons.utils.ItemStackUtils;
-import com.mrkelpy.bountyseekers.commons.utils.PluginConstants;
 import org.bukkit.Bukkit;
+import org.bukkit.GameRule;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -122,11 +124,24 @@ public class BountyRaiseGUI extends ConfirmationGUI {
 
         // Unregisters the event handlers and closes the inventory so there's no recursion
         HandlerList.unregisterAll(this);
-        this.benefactor.getPlayer().closeInventory();
 
-        Bukkit.getScheduler().runTaskLater(
-                Bukkit.getPluginManager().getPlugin(PluginConstants.PLUGIN_NAME),
-                () -> this.benefactor.getPlayer().getInventory().setContents(this.benefactor.getInventory().getContents()), 2L);
+        if (this.benefactor.getPlayer().getOpenInventory().getType() == InventoryType.CHEST)
+            this.benefactor.getPlayer().closeInventory();
+
+        // Drops all the items inside the GUI at the player's location if they die with the GUI open
+        if (player.getHealth() == 0 && Boolean.FALSE.equals(player.getWorld().getGameRuleValue(GameRule.KEEP_INVENTORY))) {
+            for (int i = 0; this.storageSlots >= i; i++) {
+                ItemStack item = this.inventory.getItem(i);
+
+                if (item != null && item.getType() != Material.AIR)
+                    player.getWorld().dropItemNaturally(player.getLocation(), item);
+            }
+            return;
+        }
+
+        // If that doesn't happen, and there's a normal cancellation, return the items to the player.
+        this.benefactor.getPlayer().getInventory().setContents(this.benefactor.getInventory().getContents());
+
     }
 
     /**
@@ -164,6 +179,7 @@ public class BountyRaiseGUI extends ConfirmationGUI {
     @Override
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
+
         if (event.getInventory().equals(this.inventory))
             this.onCancel((Player) event.getPlayer());
     }

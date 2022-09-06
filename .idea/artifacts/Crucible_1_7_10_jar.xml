@@ -2,7 +2,7 @@
   <artifact type="jar" name="Crucible_1_7_10:jar">
     <output-path>$USER_HOME$/Desktop/Base/Minecraft/Servers/BountySeekers/1.7.10-Crucible/plugins</output-path>
     <root id="archive" name="Crucible_1_7_10.jar">
-      <element id="module-output" name="Crucible_1_7_10" />
+      <element id="module-output" name="Crucible_1.7.10" />
       <element id="module-output" name="Commons" />
       <element id="module-output" name="CNMS" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/github/azbh111/craftbukkit-1.7.10/R/craftbukkit-1.7.10-R.jar" path-in-jar="/" />

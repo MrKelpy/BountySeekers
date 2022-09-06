@@ -1,7 +1,10 @@
 package com.mrkelpy.bountyseekers.commons.utils;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,5 +87,34 @@ public class ItemStackUtils {
         return false;
     }
 
+    /**
+     * Filters out the slots that are not storage slots in the inventory. (The hotbar + the 27 storage ones)
+     * @param player The player to check.
+     * @return The filtered ItemStack[].
+     */
+    public static ItemStack[] getStorageContents(Player player) {
+
+        ItemStack[] contents = player.getInventory().getContents();
+        List<ItemStack> storageContents = new ArrayList<>();
+
+        for (int i = 0; i < contents.length; i++)
+            if (i < InventoryType.CHEST.getDefaultSize() + 9) storageContents.add(contents[i]);
+
+        return storageContents.toArray(new ItemStack[0]);
+    }
+
+    /**
+     * Returns the ItemStack, with a custom name.
+     * @param item The itemStack to return named.
+     * @param name The name to give it.
+     * @return The named itemStack.
+     */
+    public static ItemStack getRenamed(ItemStack item, String name) {
+        ItemStack renamed = item.clone();
+        ItemMeta meta = renamed.getItemMeta();
+        meta.setDisplayName(name);
+        renamed.setItemMeta(meta);
+        return renamed;
+    }
 }
 

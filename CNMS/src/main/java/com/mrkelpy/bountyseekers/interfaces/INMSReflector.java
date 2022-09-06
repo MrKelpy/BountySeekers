@@ -22,7 +22,7 @@ public interface INMSReflector {
         
         public abstract void write(Object nbtTagCompound, DataOutput dataOutput);
 
-        public abstract Object read(DataInputStream dataInputStream);
+        public Object read(DataInputStream dataInputStream) { return null;}
     }
 
     abstract class ItemStack {

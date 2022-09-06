@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 /**
  * This class implements reflections for any needed bukkit methods. <br>
- * <font color="yellow"> This class is compatible with Minecraft Version 1.7.x</font>
+ * <font color="yellow"> This class is compatible with Minecraft Version 1.7.x-1.16.x</font>
  */
 public class ReBukkit implements IBukkitReflector {
 

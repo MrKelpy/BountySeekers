@@ -1,10 +1,13 @@
 package com.mrkelpy.bountyseekers.commons.utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * This class implements utility methods for GUI creation.
@@ -28,7 +31,7 @@ public class GUIUtils {
         ItemMeta itemMeta = placeholder.getItemMeta();
 
         // Sets the custom data for the item
-        itemMeta.setDisplayName("§f" + itemName);
+        itemMeta.setDisplayName("§e" + itemName);
         if (itemLore != null) itemMeta.setLore(itemLore);
 
         // Saves the data and returns the item
@@ -37,7 +40,7 @@ public class GUIUtils {
     }
 
     /**
-     * Alternative for {@link GUIUtils#createItemPlaceholder(Material, String, List, short)}, suited for legacy
+     * Alternative for {@link GUIUtils#createItemPlaceholder(Material, String, List)}, suited for legacy
      * versions, where the extra data is used. <br>
      *
      * @param itemType The item type of the item to be created.
@@ -54,13 +57,41 @@ public class GUIUtils {
         ItemMeta itemMeta = placeholder.getItemMeta();
 
         // Sets the custom data for the item
-        itemMeta.setDisplayName("§f" + itemName);
+        itemMeta.setDisplayName("§e" + itemName);
         if (itemLore != null) itemMeta.setLore(itemLore);
 
         // Saves the data and returns the item
         placeholder.setItemMeta(itemMeta);
         return placeholder;
     }
+
+    /**
+     * Creates a playerHead itemStack belonging to a player, and edits the item's name, and lore.
+     * @param playerUUID The player's UUID.
+     * @param customName The custom name of the item.
+     * @param itemLore The item's lore.
+     * @return The itemStack with the player's head.
+     */
+    public static ItemStack getPlayerHeadPlaceholder(UUID playerUUID, String customName, List<String> itemLore) {
+
+        ItemStack placeholder = new ItemStack(Material.PLAYER_HEAD, 1);
+        SkullMeta itemMeta = (SkullMeta) placeholder.getItemMeta();
+
+        itemMeta.setOwningPlayer(Bukkit.getOfflinePlayer(playerUUID));
+        if (customName != null) itemMeta.setDisplayName("§f" + customName);
+        if (itemLore != null) itemMeta.setLore(itemLore);
+
+        placeholder.setItemMeta(itemMeta);
+        return placeholder;
+    }
+
+    /**
+     * Shortcut for {@link #getPlayerHeadPlaceholder(UUID, String, List)} with no custom name or lore.
+     */
+    public static ItemStack getPlayerHeadPlaceholder(UUID playerUUID) {
+        return getPlayerHeadPlaceholder(playerUUID, null, null);
+    }
+
 
     /**
      * Shortcut for {@link #createItemPlaceholder(Material, String, List)} with the lore set to null.

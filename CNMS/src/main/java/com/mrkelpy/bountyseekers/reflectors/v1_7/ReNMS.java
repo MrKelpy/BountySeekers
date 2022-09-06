@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * This class handles the needed classes related to NMS using reflection.<br>
- * <font color="yellow"> This class is compatible with Minecraft Version 1.7.x</font>
+ * <font color="yellow"> This class is compatible with Minecraft Version 1.7.x-1.11</font>
  */
 public class ReNMS implements INMSReflector {
 

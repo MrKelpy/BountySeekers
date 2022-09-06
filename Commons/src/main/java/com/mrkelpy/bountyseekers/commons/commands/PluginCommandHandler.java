@@ -1,5 +1,6 @@
 package com.mrkelpy.bountyseekers.commons.commands;
 
+import com.mrkelpy.bountyseekers.commons.utils.PluginConstants;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -81,10 +82,15 @@ public class PluginCommandHandler implements CommandExecutor {
 
         try {
             // Reflect the method that corresponds to the command implementation and call it
-            this.commands.getClass().getMethod(command + "Command", CommandSender.class, String[].class).invoke(this.commands, commandSender, args);
+            this.getCommandMethodReflection(command).invoke(this.commands, commandSender, args);
             return true;
 
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {}
+        } catch (InvocationTargetException e) {
+            commandSender.sendMessage("§cAn internal error happened whilst running this command. Please report the issue to the plugin developer.");
+            PluginConstants.LOGGER.warning("An internal error happened whilst running <" + command + "> with arguments" + String.join(", ", args));
+            PluginConstants.LOGGER.warning("Error: " + e.getCause().getMessage());
+            return true;
+        } catch (NoSuchMethodException | IllegalAccessException ignored) {}
 
         commandSender.sendMessage("§cUnknown command. Use /bounty help for a list of available commands");
         return true;
@@ -95,14 +101,14 @@ public class PluginCommandHandler implements CommandExecutor {
      * @param command The command name to locate the implementation method
      * @return The method reflection
      */
-    private Method getCommandMethodReflection(String command) {
+    private Method getCommandMethodReflection(String command) throws NoSuchMethodException {
 
         for (Method method : this.commands.getClass().getMethods()) {
             if (method.getName().equalsIgnoreCase(command + "Command")) {
                 return method;
             }
         }
-        return null;
+        throw new NoSuchMethodException();
     }
 
 

@@ -5,16 +5,25 @@ import com.mrkelpy.bountyseekers.interfaces.INMSReflector;
 
 /**
  * This enum allows for any version of the plugin to declare which NMS and Bukkit
- * version it is compatible with. Every different compatibility version will be represented
+ * version it is MINIMALLY compatible with. Every different compatibility version will be represented
  * in this enum, mapped to the two Reflector objects that it should use.
  * <br>
- * This is mostly just an accessibility class, for handy implementation of version compartibility.
+ * <font color="aqua">Minimal Compatibility Example: 1.9 uses the v1_7 compatibility because there were no changes in NMS between those versions. </font>
  */
 public enum CompatibilityMode {
 
     /**
      * ENUM DECLARATION
      */
+    v1_18(com.mrkelpy.bountyseekers.reflectors.v1_17.ReBukkit.INSTANCE,
+            com.mrkelpy.bountyseekers.reflectors.v1_18.ReNMS.INSTANCE), // v1_17 Bukkit and v1_18 NMS reflectors
+
+    v1_17(com.mrkelpy.bountyseekers.reflectors.v1_17.ReBukkit.INSTANCE,
+            com.mrkelpy.bountyseekers.reflectors.v1_17.ReNMS.INSTANCE), // v1_17 Bukkit and NMS reflectors
+
+    v1_11(com.mrkelpy.bountyseekers.reflectors.v1_7.ReBukkit.INSTANCE,
+            com.mrkelpy.bountyseekers.reflectors.v1_11.ReNMS.INSTANCE),  // v1_7 Bukkit and v1_11 NMS reflectors
+
     v1_7(com.mrkelpy.bountyseekers.reflectors.v1_7.ReBukkit.INSTANCE,
             com.mrkelpy.bountyseekers.reflectors.v1_7.ReNMS.INSTANCE),  // v1_7 Bukkit and NMS reflectors
 

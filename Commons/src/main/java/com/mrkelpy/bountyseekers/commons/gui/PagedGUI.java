@@ -1,6 +1,7 @@
 package com.mrkelpy.bountyseekers.commons.gui;
 
 import com.mrkelpy.bountyseekers.commons.utils.GUIUtils;
+import com.mrkelpy.bountyseekers.commons.utils.ItemStackUtils;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
 import org.bukkit.Bukkit;
@@ -174,20 +175,20 @@ public abstract class PagedGUI implements Listener {
     private void setPagingButtons() {
 
         ItemStack limeDye = Material.getMaterial("LIME_DYE") != null ?
-                GUIUtils.createItemPlaceholder(Material.getMaterial("LIME_DYE"), "§bPrevious Page") :
-                GUIUtils.createItemPlaceholder(Material.getMaterial("INK_SACK"), "§bCancel", null, (short) 10);
+                GUIUtils.createItemPlaceholder(Material.getMaterial("LIME_DYE"), "tmp") :
+                GUIUtils.createItemPlaceholder(Material.getMaterial("INK_SACK"), "tmp", null, (short) 10);
 
         ItemStack grayDye = Material.getMaterial("GRAY_DYE") != null ?
-                GUIUtils.createItemPlaceholder(Material.getMaterial("GRAY_DYE"), "§bCancel") :
-                GUIUtils.createItemPlaceholder(Material.getMaterial("INK_SACK"), "§bCancel", null, (short) 8);
+                GUIUtils.createItemPlaceholder(Material.getMaterial("GRAY_DYE"), "tmp") :
+                GUIUtils.createItemPlaceholder(Material.getMaterial("INK_SACK"), "tmp", null, (short) 8);
 
         ItemStack orangeDye = Material.getMaterial("ORANGE_DYE") != null ?
-                GUIUtils.createItemPlaceholder(Material.getMaterial("ORANGE_DYE"), "§bCancel") :
-                GUIUtils.createItemPlaceholder(Material.getMaterial("INK_SACK"), "§bCancel", null, (short) 14);
+                GUIUtils.createItemPlaceholder(Material.getMaterial("ORANGE_DYE"), "§bGo Back") :
+                GUIUtils.createItemPlaceholder(Material.getMaterial("INK_SACK"), "§bGo Back", null, (short) 14);
 
-        this.inventory.setItem(this.storageSlots + 1, this.hasPreviousPage() ? limeDye : grayDye);
+        this.inventory.setItem(this.storageSlots + 1, this.hasPreviousPage() ? ItemStackUtils.getRenamed(limeDye, "§bPrevious Page") : ItemStackUtils.getRenamed(grayDye, "§bPrevious Page"));
         this.inventory.setItem(this.storageSlots + 5, orangeDye);
-        this.inventory.setItem(this.storageSlots + 9, this.hasNextPage() ? limeDye : grayDye);
+        this.inventory.setItem(this.storageSlots + 9, this.hasNextPage() ? ItemStackUtils.getRenamed(limeDye, "§bNext Page") : ItemStackUtils.getRenamed(grayDye, "§bNext Page"));
     }
 
     /**

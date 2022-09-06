@@ -2,7 +2,7 @@
   <artifact type="jar" name="Spigot_1_7:jar">
     <output-path>$USER_HOME$/Desktop/Base/Minecraft/Servers/BountySeekers/1.7.10/server_files/plugins</output-path>
     <root id="archive" name="Spigot_1_7.jar">
-      <element id="module-output" name="Spigot_1_7" />
+      <element id="module-output" name="Spigot_1.7.x" />
       <element id="module-output" name="Commons" />
       <element id="module-output" name="CNMS" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/github/azbh111/craftbukkit-1.7.10/R/craftbukkit-1.7.10-R.jar" path-in-jar="/" />

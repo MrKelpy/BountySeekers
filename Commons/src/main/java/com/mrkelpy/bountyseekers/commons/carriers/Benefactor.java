@@ -1,5 +1,6 @@
 package com.mrkelpy.bountyseekers.commons.carriers;
 
+import com.mrkelpy.bountyseekers.commons.utils.ItemStackUtils;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -24,8 +25,8 @@ public class Benefactor {
     public Benefactor(Player player, boolean anonymous) {
         this.player = player;
         this.anonymous = anonymous;
-        this.inventory = Bukkit.createInventory(null, InventoryType.PLAYER);
-        this.inventory.setContents(this.player.getInventory().getContents());
+        this.inventory = Bukkit.createInventory(null, InventoryType.CHEST.getDefaultSize() + 9);
+        this.inventory.setContents(ItemStackUtils.getStorageContents(this.player));
     }
 
     /**

@@ -94,8 +94,8 @@ public abstract class ConfirmationGUI implements Listener {
                 GUIUtils.createItemPlaceholder(Material.getMaterial("WOOL"), "§cCancel", null, (short) 14);
 
         ItemStack limeWool = Material.getMaterial("LIME_WOOL") != null ?
-                GUIUtils.createItemPlaceholder(Material.getMaterial("LIME_WOOL"), "§cConfirm") :
-                GUIUtils.createItemPlaceholder(Material.getMaterial("WOOL"), "§cConfirm", null, (short) 5);
+                GUIUtils.createItemPlaceholder(Material.getMaterial("LIME_WOOL"), "§eConfirm") :
+                GUIUtils.createItemPlaceholder(Material.getMaterial("WOOL"), "§eConfirm", null, (short) 5);
 
         this.inventory.setItem(this.storageSlots + 1, redWool);
 
