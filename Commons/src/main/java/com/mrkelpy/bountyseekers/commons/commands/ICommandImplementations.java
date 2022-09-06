@@ -1,5 +1,6 @@
 package com.mrkelpy.bountyseekers.commons.commands;
 
+import com.mrkelpy.bountyseekers.commons.enums.CommandRegistry;
 import com.mrkelpy.bountyseekers.commons.utils.PluginConstants;
 import org.bukkit.command.CommandSender;
 

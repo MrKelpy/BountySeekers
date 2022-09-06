@@ -1,4 +1,4 @@
-package com.mrkelpy.bountyseekers.commons.commands;
+package com.mrkelpy.bountyseekers.commons.enums;
 
 /**
  * This class holds all the existent commands, their needed permissions, the description, and
