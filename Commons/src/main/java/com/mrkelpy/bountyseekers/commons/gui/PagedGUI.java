@@ -18,6 +18,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * This abstract class handles the pagination for any GUI that extends it.
@@ -28,28 +29,35 @@ public abstract class PagedGUI implements Listener {
     protected final Inventory inventory;
     protected final int storageSlots;
     private List<ItemStack> itemList;
+    private UUID userUUID;
     private int page;
 
     /**
      * Main constructor for the PagedGUI. Create the inventory and set the items inside it.
+     *
      * @param inventoryName The title of the inventory.
      * @param inventorySize The base inventory size, where items can be stored.
+     * @param userUUID      The UUID of the player who is using this instance of the GUI
      */
-    public PagedGUI(String inventoryName, int inventorySize, List<ItemStack> items) {
-        this(inventoryName, inventorySize);
+    public PagedGUI(String inventoryName, int inventorySize, List<ItemStack> items, UUID userUUID) {
+        this(inventoryName, inventorySize, userUUID);
         this.itemList = items;
+        this.userUUID = userUUID;
         this.sendToPage(this.page);
         this.registerListeners();
     }
 
     /**
      * This constructor allows one to set the item list manually after the GUI has been created.
+     *
      * @param inventoryName The title of the inventory.
      * @param inventorySize The base inventory size, where items can be stored.
+     * @param userUUID      The UUID of the player who is using this instance of the GUI
      */
-    public PagedGUI(String inventoryName, int inventorySize) {
-        this.inventory = Bukkit.createInventory(null, inventorySize+9, inventoryName);
+    public PagedGUI(String inventoryName, int inventorySize, UUID userUUID) {
+        this.inventory = Bukkit.createInventory(null, inventorySize + 9, inventoryName);
         this.storageSlots = inventorySize - 1;
+        this.userUUID = userUUID;
         this.page = 1;
         this.registerListeners();
     }
@@ -63,12 +71,12 @@ public abstract class PagedGUI implements Listener {
 
     @Getter
     public List<ItemStack> getItems() {
-    	return this.itemList;
+        return this.itemList;
     }
 
     @Setter
     public void setItems(List<ItemStack> itemList) {
-    	this.itemList = itemList;
+        this.itemList = itemList;
     }
 
     /**
@@ -77,11 +85,13 @@ public abstract class PagedGUI implements Listener {
      * <br>
      * This method can, and should be overriden to process clicks on GUIs that extend PagedGUI, but the super
      * should be called first.
+     *
      * @param event InventoryClickEvent
      */
     @EventHandler
     public void onItemClick(InventoryClickEvent event) {
-        if (event.getInventory().equals(this.inventory)) event.setCancelled(true);
+        if (event.getInventory().equals(this.inventory) && event.getWhoClicked().getUniqueId().equals(this.userUUID))
+            event.setCancelled(true);
         else return;
 
         if (event.isShiftClick()) event.setCancelled(true);
@@ -92,25 +102,29 @@ public abstract class PagedGUI implements Listener {
 
     /**
      * Prevents an item from being dragged on, to prevent exploits.
+     *
      * @param event InventoryDragEvent
      */
     @EventHandler
     public void onItemDrag(InventoryDragEvent event) {
-        if (event.getInventory().equals(this.inventory)) event.setCancelled(true);
+        if (event.getInventory().equals(this.inventory) && event.getWhoClicked().getUniqueId().equals(this.userUUID))
+            event.setCancelled(true);
     }
 
     /**
      * Unregisters all event listeners present in an instance of this GUI to save resources.
+     *
      * @param event InventoryCloseEvent
      */
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
-        if (event.getInventory().equals(this.inventory))
+        if (event.getInventory().equals(this.inventory) && event.getPlayer().getUniqueId().equals(this.userUUID))
             HandlerList.unregisterAll(this);
     }
 
     /**
      * This method sends a GUI to a specific page in the PagedGUI.
+     *
      * @param page The page to send the GUI to.
      */
     protected void sendToPage(int page) {
@@ -145,10 +159,13 @@ public abstract class PagedGUI implements Listener {
      * @return The current page of the PagedGUI.
      */
     @Getter
-    protected int getPage() { return this.page; }
+    protected int getPage() {
+        return this.page;
+    }
 
     /**
      * Evaluates whether there is a previous page in the GUI or not.
+     *
      * @return boolean
      */
     private boolean hasPreviousPage() {
@@ -157,6 +174,7 @@ public abstract class PagedGUI implements Listener {
 
     /**
      * Evaluates whether there is a next page in the GUI or not.
+     *
      * @return boolean
      */
     private boolean hasNextPage() {
@@ -193,6 +211,7 @@ public abstract class PagedGUI implements Listener {
 
     /**
      * Sets the items in the given list of ItemStacks into the inventory page.
+     *
      * @param items The list of items to be set
      */
     private void setPageItems(List<ItemStack> items) {

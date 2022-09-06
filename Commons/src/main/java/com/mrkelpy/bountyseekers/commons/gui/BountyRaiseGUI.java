@@ -36,7 +36,7 @@ public class BountyRaiseGUI extends ConfirmationGUI {
      * Main constructor for the ConfirmationGUI class.
      */
     public BountyRaiseGUI(SimplePlayer target, Benefactor benefactor, CompatibilityMode compatibility) {
-        super("Raise " + target.getName() + "'s Bounty", 27);
+        super("Raise " + target.getName() + "'s Bounty", 27, benefactor.getPlayer().getUniqueId());
         this.bounty = new Bounty(target.getUniqueId(), compatibility);
         this.benefactor = benefactor;
     }
@@ -146,6 +146,7 @@ public class BountyRaiseGUI extends ConfirmationGUI {
 
     /**
      * Prevents the player from picking up the confirmation button items.
+     *
      * @param event InventoryClickEvent
      */
     @Override

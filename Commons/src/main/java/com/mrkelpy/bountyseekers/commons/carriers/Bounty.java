@@ -54,7 +54,7 @@ public class Bounty {
      * information for the Bounty class. This automatically handles the base64 to List conversion for the rewards.
      *
      * @param playerUUID The target player's UUID.
-     * @param compat The compatibility mode to use for the Bounty class.
+     * @param compat     The compatibility mode to use for the Bounty class.
      */
     public Bounty(UUID playerUUID, CompatibilityMode compat) {
         this.target = UUIDCache.INSTANCE.getName(playerUUID);
@@ -65,7 +65,7 @@ public class Bounty {
         String bountyInformation = this.bountyFile.exists() ? FileUtils.readFile(this.bountyFile) : null;
 
         ItemStack[] rewardArray = bountyInformation != null ? this.serializationUtils.itemStackArrayFromBase64(bountyInformation) : null;
-        this.rewards = bountyInformation != null && rewardArray != null ? new ArrayList<>(Arrays.asList(rewardArray)): new ArrayList<>();
+        this.rewards = bountyInformation != null && rewardArray != null ? new ArrayList<>(Arrays.asList(rewardArray)) : new ArrayList<>();
         this.raisedStackCount = 0;
     }
 
@@ -78,7 +78,7 @@ public class Bounty {
     public List<ItemStack> getRewards() {
         return this.rewards;
     }
-    
+
     @Getter
     public int getAdditionCount() {
         return this.raisedStackCount;
@@ -86,10 +86,11 @@ public class Bounty {
 
     /**
      * Raises the bounty for the target by adding the reward to the bounty.
+     *
      * @param reward The reward to add to the bounty.
      */
     public void addReward(ItemStack reward) {
-        
+
         if (reward != null && reward.getType() != Material.AIR) {
             this.rewards.add(reward);
             this.raisedStackCount += 1;
@@ -99,6 +100,7 @@ public class Bounty {
     /**
      * Adds all the items present in the rewards List to the given hunter's inventory.
      * This will also reset the bounty for the hunter's inventory
+     *
      * @param hunter The bounty hunter that claimed the bounty.
      */
     public void claimBounty(Player hunter) {
@@ -108,8 +110,10 @@ public class Bounty {
             if (!Arrays.stream(hunter.getInventory().getContents()).allMatch(Objects::nonNull))
                 hunter.getInventory().addItem(reward);
 
-            // If the inventory is full, start dropping the rewards on the ground.
-            else { hunter.getWorld().dropItem(hunter.getLocation(), reward); }
+                // If the inventory is full, start dropping the rewards on the ground.
+            else {
+                hunter.getWorld().dropItem(hunter.getLocation(), reward);
+            }
         }
 
         this.reset();

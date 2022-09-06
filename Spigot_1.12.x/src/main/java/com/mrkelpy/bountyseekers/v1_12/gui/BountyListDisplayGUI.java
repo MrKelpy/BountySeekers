@@ -35,7 +35,7 @@ public class BountyListDisplayGUI extends PagedGUI {
      * Main constructor for the BountyListDisplayGUI.
      */
     public BountyListDisplayGUI(Player player) {
-        super("Active Bounties", 27);
+        super("Active Bounties", 27, player.getUniqueId());
         this.player = player;
         this.setItems(this.makeBountyItemList());
         this.reload();
@@ -50,14 +50,16 @@ public class BountyListDisplayGUI extends PagedGUI {
 
     /**
      * Displays the selected bounty.
+     *
      * @param event InventoryClickEvent
      */
     @Override
     @EventHandler
     public void onItemClick(InventoryClickEvent event) {
         super.onItemClick(event);
-        if (event.getRawSlot() > this.storageSlots || event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) return;
-
+        if (event.getRawSlot() > this.storageSlots || event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR)
+            return;
+        if (!event.getWhoClicked().getUniqueId().equals(this.player.getUniqueId())) return;
         UUID playerUUID = UUIDCache.INSTANCE.getUUID(event.getCurrentItem().getItemMeta().getDisplayName().substring(4));
         if (playerUUID == null) return;
         String data = FileUtils.readFile(new File(this.bountiesDirectory, playerUUID + ".bounty"));
@@ -68,10 +70,12 @@ public class BountyListDisplayGUI extends PagedGUI {
      * There's nothing to go back to, so leave the body empty.
      */
     @Override
-    protected void goBack() {}
+    protected void goBack() {
+    }
 
     /**
      * Creates an ItemStack list representing all the currently available bounties.
+     *
      * @return List<ItemStack> The list of ItemStacks representing the currently available bounties.
      */
     private List<ItemStack> makeBountyItemList() {

@@ -96,7 +96,7 @@ public class ReNMS implements INMSReflector {
     @SuppressWarnings("InnerClassMayBeStatic")
     public class NBTCompressedStreamTools extends INMSReflector.NBTCompressedStreamTools {
 
-        public final Class<?> CLASS =  ReNMS.INSTANCE.getNMSClass("NBTCompressedStreamTools");
+        public final Class<?> CLASS = ReNMS.INSTANCE.getNMSClass("NBTCompressedStreamTools");
 
         /**
          * Reflection of the NBTCompressedStreamTools.a(NBTTagCompound, DataOutput) method.
@@ -137,7 +137,7 @@ public class ReNMS implements INMSReflector {
     @SuppressWarnings("InnerClassMayBeStatic")
     public class ItemStack extends INMSReflector.ItemStack {
 
-        public final Class<?> CLASS =  ReNMS.INSTANCE.getNMSClass("ItemStack");
+        public final Class<?> CLASS = ReNMS.INSTANCE.getNMSClass("ItemStack");
 
         /**
          * Reflection of the ItemStack.createStack(NBTTagCompound) method.

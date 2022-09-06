@@ -7,7 +7,8 @@ public class ChatUtils {
     /**
      * Sends an ingame chat message to a player with the custom prefix and formatting
      * of the plugin.
-     * @param player The player to send the message to.
+     *
+     * @param player  The player to send the message to.
      * @param message The message to send.
      * @return The message that was sent.
      */

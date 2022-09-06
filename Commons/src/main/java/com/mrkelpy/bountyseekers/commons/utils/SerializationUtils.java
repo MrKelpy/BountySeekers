@@ -27,6 +27,7 @@ public class SerializationUtils {
     /**
      * Main constructor for the SerializationUtils class. This constructor obtains the Bukkit and NMS reflectors
      * from the compatibility mode enum and loads the necessary classes into properties to be used for serialization.
+     *
      * @param compatibilityMode The compatibility mode enum to use for the SerializationUtils object.
      */
     public SerializationUtils(CompatibilityMode compatibilityMode) {

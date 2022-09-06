@@ -32,8 +32,9 @@ public interface ICommandImplementations {
     /**
      * The default implementation of this method iterates through every registered command and
      * builds a help menu command with the command usage, the description, and the needed permissions for every command.
+     *
      * @param commandSender The sender of the command.
-     * @param args The command arguments.
+     * @param args          The command arguments.
      * @return Boolean, Feedback to the sender.
      */
     default boolean helpCommand(CommandSender commandSender, String[] args) {

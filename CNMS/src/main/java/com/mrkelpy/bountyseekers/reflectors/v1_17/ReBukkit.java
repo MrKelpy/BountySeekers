@@ -15,17 +15,17 @@ public class ReBukkit implements IBukkitReflector {
 
     /**
      * Uses reflection to get the current Bukkit class for the given server version.
+     *
      * @param name The name of the class to get.
      * @return The reflected class.
      */
     @Override
-    public Class<?> getBukkitClass(String name)  {
+    public Class<?> getBukkitClass(String name) {
 
         try {
             return Class.forName("org.bukkit.craftbukkit." +
                     Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3] + "." + name);
-        }
-        catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             // If an error happens, print it into console and return null.
             e.printStackTrace();
             return ObjectUtils.Null.class;

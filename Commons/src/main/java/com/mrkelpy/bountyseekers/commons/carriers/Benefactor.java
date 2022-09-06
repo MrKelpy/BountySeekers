@@ -19,7 +19,8 @@ public class Benefactor {
 
     /**
      * Main constructor for the Benefactor class.
-     * @param player The player to set.
+     *
+     * @param player    The player to set.
      * @param anonymous Whether the player is anonymous or not.
      */
     public Benefactor(Player player, boolean anonymous) {
@@ -56,6 +57,7 @@ public class Benefactor {
     /**
      * Retruns the player's UUID with a suffix if they're anonymous, otherwise
      * return the UUID normally.
+     *
      * @return The player's UUID.
      */
     @Override

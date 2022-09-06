@@ -6,8 +6,11 @@ import java.io.DataOutput;
 public interface INMSReflector {
 
     Class<?> getNMSClass(String name);
+
     INMSReflector.NBTTagCompound getNBTTagCompound();
+
     INMSReflector.NBTCompressedStreamTools getNBTCompressedStreamTools();
+
     INMSReflector.ItemStack getItemStack();
 
 
@@ -19,14 +22,16 @@ public interface INMSReflector {
     }
 
     abstract class NBTCompressedStreamTools {
-        
+
         public abstract void write(Object nbtTagCompound, DataOutput dataOutput);
 
-        public Object read(DataInputStream dataInputStream) { return null;}
+        public Object read(DataInputStream dataInputStream) {
+            return null;
+        }
     }
 
     abstract class ItemStack {
-        
+
         public abstract Object create(Object nbtTagCompound);
 
         public abstract Object save(Object itemStack, Object nbtTagCompound);

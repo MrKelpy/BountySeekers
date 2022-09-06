@@ -27,10 +27,11 @@ public class PluginCommandHandler implements CommandExecutor {
 
     /**
      * Listens for commands sent to the server.
+     *
      * @param commandSender The sender of the command.
-     * @param command The command that was sent.
-     * @param s The command as a string
-     * @param args The arguments of the command.
+     * @param command       The command that was sent.
+     * @param s             The command as a string
+     * @param args          The arguments of the command.
      * @return (Boolean) Feedback to the caller.
      */
     @Override
@@ -46,8 +47,9 @@ public class PluginCommandHandler implements CommandExecutor {
     /**
      * Checks if a player has permission to use a command. If not, send a message to the player telling
      * them they do not have permission.
+     *
      * @param permission The permission to check for
-     * @param sender The sender to check for the permission
+     * @param sender     The sender to check for the permission
      * @return Whether the player has permission or not
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -64,8 +66,9 @@ public class PluginCommandHandler implements CommandExecutor {
      * normally from there. This serves to prevent the command from being used by other plugins, and to have a "command space"
      * for the plugin.
      * The "args" array will also be modified, removing the first element, because that's the command to be called.
+     *
      * @param commandSender The sender of the command
-     * @param args The arguments of the command
+     * @param args          The arguments of the command
      * @return Boolean, feedback to the caller
      */
     //supress unused return value
@@ -90,7 +93,8 @@ public class PluginCommandHandler implements CommandExecutor {
             PluginConstants.LOGGER.warning("An internal error happened whilst running <" + command + "> with arguments" + String.join(", ", args));
             PluginConstants.LOGGER.warning("Error: " + e.getCause().getMessage());
             return true;
-        } catch (NoSuchMethodException | IllegalAccessException ignored) {}
+        } catch (NoSuchMethodException | IllegalAccessException ignored) {
+        }
 
         commandSender.sendMessage("§cUnknown command. Use /bounty help for a list of available commands");
         return true;
@@ -98,6 +102,7 @@ public class PluginCommandHandler implements CommandExecutor {
 
     /**
      * Retrieves the method reflection from the command implementation class.
+     *
      * @param command The command name to locate the implementation method
      * @return The method reflection
      */

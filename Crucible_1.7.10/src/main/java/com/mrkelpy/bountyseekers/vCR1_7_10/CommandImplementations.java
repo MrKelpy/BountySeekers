@@ -20,8 +20,9 @@ public class CommandImplementations implements ICommandImplementations {
 
     /**
      * Changes the configured reward limit for bounties.
+     *
      * @param commandSender The sender of the command
-     * @param args The arguments of the command
+     * @param args          The arguments of the command
      * @return Boolean, feedback to the caller
      */
     @Override
@@ -41,8 +42,7 @@ public class CommandImplementations implements ICommandImplementations {
             InternalConfigs.INSTANCE.save();
             commandSender.sendMessage(ChatUtils.sendMessage(null, "Reward limit set to " + Integer.parseInt(args[0])));
             return true;
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             // If the argument is not a number, send an error message
             commandSender.sendMessage("Limit must be numeric.");
             return true;
@@ -51,8 +51,9 @@ public class CommandImplementations implements ICommandImplementations {
 
     /**
      * Opens up a GUI to allow a player to raise someone's bounty.
+     *
      * @param commandSender The sender of the command
-     * @param args The arguments of the command
+     * @param args          The arguments of the command
      * @return Boolean, feedback to the caller
      */
     @Override
@@ -71,8 +72,9 @@ public class CommandImplementations implements ICommandImplementations {
 
     /**
      * Opens up a GUI to allow a player to raise someone's bounty.
+     *
      * @param commandSender The sender of the command
-     * @param args The arguments of the command
+     * @param args          The arguments of the command
      * @return Boolean, feedback to the caller
      */
     @Override
@@ -109,8 +111,9 @@ public class CommandImplementations implements ICommandImplementations {
 
     /**
      * Opens up a GUI to allow a player to raise someone's bounty, hiding the player's indentity in the process.
+     *
      * @param commandSender The sender of the command
-     * @param args The arguments of the command
+     * @param args          The arguments of the command
      * @return Boolean, feedback to the caller
      */
     @Override
@@ -147,8 +150,9 @@ public class CommandImplementations implements ICommandImplementations {
 
     /**
      * Resets a player's bounty.
+     *
      * @param commandSender The sender of the command
-     * @param args The arguments of the command
+     * @param args          The arguments of the command
      * @return Boolean, feedback to the caller
      */
     @Override

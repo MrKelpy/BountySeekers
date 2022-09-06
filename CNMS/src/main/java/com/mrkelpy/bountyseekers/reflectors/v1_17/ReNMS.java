@@ -20,6 +20,7 @@ public class ReNMS implements INMSReflector {
     /**
      * Uses reflection to get the asked NMS class. This is possible since after mc 1.17 all class
      * locations are at a common point.
+     *
      * @param name The name of the class to get.
      * @return The reflected class.
      */
@@ -96,7 +97,7 @@ public class ReNMS implements INMSReflector {
     @SuppressWarnings("InnerClassMayBeStatic")
     public class NBTCompressedStreamTools extends INMSReflector.NBTCompressedStreamTools {
 
-        public final Class<?> CLASS =  ReNMS.INSTANCE.getNMSClass("nbt.NBTCompressedStreamTools");
+        public final Class<?> CLASS = ReNMS.INSTANCE.getNMSClass("nbt.NBTCompressedStreamTools");
 
         /**
          * Reflection of the NBTCompressedStreamTools.a(NBTTagCompound, DataOutput) method.
@@ -137,13 +138,12 @@ public class ReNMS implements INMSReflector {
     @SuppressWarnings("InnerClassMayBeStatic")
     public class ItemStack extends INMSReflector.ItemStack {
 
-        public final Class<?> CLASS =  ReNMS.INSTANCE.getNMSClass("world.item.ItemStack");
+        public final Class<?> CLASS = ReNMS.INSTANCE.getNMSClass("world.item.ItemStack");
 
         /**
          * Reflection of the ItemStack(NBTTagCompound) constructor.
          * <br>
          * This method creates a new ItemStack from the given NBTTagCompound.
-         *
          *
          * @param nbtTagCompound The NBTTagCompound to create the ItemStack from.
          * @return The ItemStack with the given NBTTagCompound.

@@ -18,10 +18,11 @@ public class BountyDisplayGUI extends PagedGUI {
 
     /**
      * Main constructor for the BountyDisplayGUI.
+     *
      * @param items The bounty rewards to display.
      */
-    public BountyDisplayGUI(Player player , ItemStack[] items) {
-        super("Bounty Rewards", 27, Arrays.asList(items));
+    public BountyDisplayGUI(Player player, ItemStack[] items) {
+        super("Bounty Rewards", 27, Arrays.asList(items), player.getUniqueId());
         this.player = player;
     }
 

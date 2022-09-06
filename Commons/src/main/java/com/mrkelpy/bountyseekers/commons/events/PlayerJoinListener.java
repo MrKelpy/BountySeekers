@@ -9,6 +9,7 @@ public class PlayerJoinListener implements Listener {
 
     /**
      * Caches the player into the UUID cache when they join the server.
+     *
      * @param event PlayerJoinEvent
      */
     @EventHandler

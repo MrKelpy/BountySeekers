@@ -23,14 +23,18 @@ public class UUIDCache {
         YamlConfiguration cache = YamlConfiguration.loadConfiguration(this.uuidCacheFile);
         cache.options().copyDefaults(false);
 
-        try { cache.save(this.uuidCacheFile); }
-        catch (Exception e) { e.printStackTrace(); }
+        try {
+            cache.save(this.uuidCacheFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return cache;
     }
 
     /**
      * Returns a player's name from the UUID
+     *
      * @return The player's name
      */
     public String getName(UUID uuid) {
@@ -39,6 +43,7 @@ public class UUIDCache {
 
     /**
      * Returns a player's UUID or name from a string. The string can be the UUID or name.
+     *
      * @return The player's UUID
      */
     public UUID getUUID(String string) {
@@ -52,8 +57,11 @@ public class UUIDCache {
         this.cache.set(uuid.toString(), name);
         this.cache.set(name, uuid.toString());
 
-        try { cache.save(this.uuidCacheFile); }
-        catch (Exception e) { e.printStackTrace(); }
+        try {
+            cache.save(this.uuidCacheFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

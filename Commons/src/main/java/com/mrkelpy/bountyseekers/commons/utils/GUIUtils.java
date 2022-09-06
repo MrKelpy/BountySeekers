@@ -13,7 +13,7 @@ import java.util.UUID;
  * This class implements utility methods for GUI creation.
  */
 public class GUIUtils {
-    
+
     /**
      * <font color="aqua">Since this method doesn't use extra data to go into the ItemStack, it is more suited for
      * 1.13+</font><br>
@@ -46,7 +46,7 @@ public class GUIUtils {
      * @param itemType The item type of the item to be created.
      * @param itemName The item's name
      * @param itemLore (Optional) The item's lore.
-     * @param data The item's data modifier
+     * @param data     The item's data modifier
      * @return The ItemStack with the custom item.
      */
     @SuppressWarnings("deprecation")
@@ -67,9 +67,10 @@ public class GUIUtils {
 
     /**
      * Creates a playerHead itemStack belonging to a player, and edits the item's name, and lore.
+     *
      * @param playerUUID The player's UUID.
      * @param customName The custom name of the item.
-     * @param itemLore The item's lore.
+     * @param itemLore   The item's lore.
      * @return The itemStack with the player's head.
      */
     public static ItemStack getPlayerHeadPlaceholder(UUID playerUUID, String customName, List<String> itemLore) {
@@ -95,6 +96,7 @@ public class GUIUtils {
 
     /**
      * Shortcut for {@link #createItemPlaceholder(Material, String, List)} with the lore set to null.
+     *
      * @param itemType The item type of the item to be created.
      * @param itemName The item's name
      * @return The ItemStack with the custom item.

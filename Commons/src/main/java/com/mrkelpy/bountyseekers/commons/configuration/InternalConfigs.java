@@ -25,6 +25,7 @@ public class InternalConfigs {
 
     /**
      * Returns the YamlConfiguration object to use to get and set values.
+     *
      * @return The player's name
      */
     public YamlConfiguration getConfig() {
@@ -35,8 +36,11 @@ public class InternalConfigs {
      * Saves the config into memory.
      */
     public void save() {
-        try { this.config.save(this.configFile); }
-        catch (Exception e) { e.printStackTrace(); }
+        try {
+            this.config.save(this.configFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

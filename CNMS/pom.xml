@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>CNMS</artifactId>
+    <version>1.0</version>
 
     <dependencies>
         <!--This adds the Spigot API artifact to the build -->

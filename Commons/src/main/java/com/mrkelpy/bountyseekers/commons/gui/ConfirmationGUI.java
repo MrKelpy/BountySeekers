@@ -15,6 +15,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import java.util.UUID;
+
 /**
  * This abstract class adds confirm/cancel buttons to a GUI.
  */
@@ -23,16 +25,20 @@ public abstract class ConfirmationGUI implements Listener {
     // This inventory instance should be used by any classes inheriting from the class.
     protected final Inventory inventory;
     protected final int storageSlots;
+    protected final UUID userUUID;
 
     /**
      * Main constructor for the ConfirmationGUI class. This constructor automatically
      * adds the extra space needed for the confirm/cancel buttons to the inventory.
-     * @param title The title of the inventory.
+     *
+     * @param title         The title of the inventory.
      * @param inventorySize The size of the inventory.
+     * @param userUUID      The UUID of the player who is using this instance of the inventory
      */
-    public ConfirmationGUI(String title, int inventorySize) {
+    public ConfirmationGUI(String title, int inventorySize, UUID userUUID) {
         this.storageSlots = inventorySize - 1;
         this.inventory = Bukkit.createInventory(null, inventorySize + 9, title);
+        this.userUUID = userUUID;
         this.addConfirmationButtons();
         this.registerListeners();
     }
@@ -53,11 +59,13 @@ public abstract class ConfirmationGUI implements Listener {
      * <br>
      * This method can, and should be overriden to process clicks on GUIs that extend PagedGUI, but the super
      * should be called first.
+     *
      * @param event InventoryClickEvent
      */
     @EventHandler
     public void onItemClick(InventoryClickEvent event) {
-        if (event.getInventory().equals(this.inventory)) event.setCancelled(true);
+        if (event.getInventory().equals(this.inventory) && event.getWhoClicked().getUniqueId().equals(this.userUUID))
+            event.setCancelled(true);
         else return;
 
         if (event.isShiftClick()) event.setCancelled(true);
@@ -67,20 +75,23 @@ public abstract class ConfirmationGUI implements Listener {
 
     /**
      * Prevents an item from being dragged on, to prevent exploits.
+     *
      * @param event InventoryDragEvent
      */
     @EventHandler
     public void onItemDrag(InventoryDragEvent event) {
-        if (event.getInventory().equals(this.inventory)) event.setCancelled(true);
+        if (event.getInventory().equals(this.inventory) && event.getWhoClicked().getUniqueId().equals(this.userUUID))
+            event.setCancelled(true);
     }
 
     /**
      * Unregisters all event listeners present in an instance of this GUI to save resources.
+     *
      * @param event InventoryCloseEvent
      */
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
-        if (event.getInventory().equals(this.inventory))
+        if (event.getInventory().equals(this.inventory) && event.getPlayer().getUniqueId().equals(this.userUUID))
             HandlerList.unregisterAll(this);
     }
 

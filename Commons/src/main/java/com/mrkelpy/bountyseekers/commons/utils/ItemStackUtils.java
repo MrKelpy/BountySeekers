@@ -73,8 +73,9 @@ public class ItemStackUtils {
     /**
      * Iterates over the given list and checks if there's any itemStack inside with less
      * than its max stack size that the given itemStack will be compressed into.
+     *
      * @param stack The itemStack to check.
-     * @param list The list to check in.
+     * @param list  The list to check in.
      * @return True if the itemStack can be compressed, false otherwise.
      */
     public static boolean willCompress(ItemStack stack, List<ItemStack> list) {
@@ -89,6 +90,7 @@ public class ItemStackUtils {
 
     /**
      * Filters out the slots that are not storage slots in the inventory. (The hotbar + the 27 storage ones)
+     *
      * @param player The player to check.
      * @return The filtered ItemStack[].
      */
@@ -105,6 +107,7 @@ public class ItemStackUtils {
 
     /**
      * Returns the ItemStack, with a custom name.
+     *
      * @param item The itemStack to return named.
      * @param name The name to give it.
      * @return The named itemStack.

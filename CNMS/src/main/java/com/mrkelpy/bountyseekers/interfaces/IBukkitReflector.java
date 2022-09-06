@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 public interface IBukkitReflector {
 
     Class<?> getBukkitClass(String name);
+
     IBukkitReflector.CraftItemStack getCraftItemStack();
 
     abstract class CraftItemStack {

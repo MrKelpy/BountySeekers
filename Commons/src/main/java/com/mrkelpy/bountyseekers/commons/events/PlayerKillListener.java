@@ -17,6 +17,7 @@ public class PlayerKillListener implements Listener {
     /**
      * Main constructor for the PlayerKillListener: Allows the plugin to handle bounty claiming
      * taking into account version compatibility.
+     *
      * @param compatibility The compatibility mode to use.
      */
     public PlayerKillListener(CompatibilityMode compatibility) {
@@ -27,6 +28,7 @@ public class PlayerKillListener implements Listener {
      * Handles the bounty claiming when a player is killed.
      * A bounty will be available for claiming if the killed player has a bounty
      * and the killer has the permission to claim bounties.
+     *
      * @param event The event to handle.
      */
     @EventHandler

@@ -66,7 +66,8 @@ public class FileUtils {
             if (!file.exists()) file.createNewFile();
             Files.write(file.toPath(), data.getBytes());
 
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
 
     }
 }

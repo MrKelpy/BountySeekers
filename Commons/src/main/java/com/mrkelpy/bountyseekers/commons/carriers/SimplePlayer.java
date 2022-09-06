@@ -16,6 +16,7 @@ public class SimplePlayer {
     /**
      * Main constructor for the SimplePlayer class. This allows for manually
      * setting the name and UUID of a player.
+     *
      * @param name The player's name.
      * @param uuid The player's UUID.
      */
@@ -27,6 +28,7 @@ public class SimplePlayer {
     /**
      * Overloaded constructor for the SimplePlayer class. This automatically
      * fills in the UUID for a player based on their name and the UUIDCache.
+     *
      * @param player The player's name
      */
     public SimplePlayer(String player) {
@@ -36,6 +38,7 @@ public class SimplePlayer {
     /**
      * Overloaded constructor for the SimplePlayer class. This automatically
      * fills in the name for a player based on their UUID and the UUIDCache.
+     *
      * @param uuid The player's UUID
      */
     public SimplePlayer(UUID uuid) {

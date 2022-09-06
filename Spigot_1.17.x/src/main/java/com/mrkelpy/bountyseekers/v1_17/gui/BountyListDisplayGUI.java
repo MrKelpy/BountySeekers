@@ -5,6 +5,7 @@ import com.mrkelpy.bountyseekers.commons.gui.PagedGUI;
 import com.mrkelpy.bountyseekers.commons.utils.FileUtils;
 import com.mrkelpy.bountyseekers.commons.utils.GUIUtils;
 import com.mrkelpy.bountyseekers.v1_17.BountySeekers;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -35,7 +36,7 @@ public class BountyListDisplayGUI extends PagedGUI {
      * Main constructor for the BountyListDisplayGUI.
      */
     public BountyListDisplayGUI(Player player) {
-        super("Active Bounties", 27);
+        super("Active Bounties", 27, player.getUniqueId());
         this.player = player;
         this.setItems(this.makeBountyItemList());
         this.reload();
@@ -51,14 +52,16 @@ public class BountyListDisplayGUI extends PagedGUI {
 
     /**
      * Displays the selected bounty.
+     *
      * @param event InventoryClickEvent
      */
     @Override
     @EventHandler
     public void onItemClick(InventoryClickEvent event) {
         super.onItemClick(event);
-        if (event.getRawSlot() > this.storageSlots || event.getCurrentItem() == null) return;
-
+        if (event.getRawSlot() > this.storageSlots || event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR)
+            return;
+        if (!event.getWhoClicked().getUniqueId().equals(this.player.getUniqueId())) return;
         UUID playerUUID = UUIDCache.INSTANCE.getUUID(event.getCurrentItem().getItemMeta().getDisplayName().substring(2));
         if (playerUUID == null) return;
         String data = FileUtils.readFile(new File(this.bountiesDirectory, playerUUID + ".bounty"));
@@ -69,10 +72,12 @@ public class BountyListDisplayGUI extends PagedGUI {
      * There's nothing to go back to, so leave the body empty.
      */
     @Override
-    protected void goBack() {}
+    protected void goBack() {
+    }
 
     /**
      * Creates an ItemStack list representing all the currently available bounties.
+     *
      * @return List<ItemStack> The list of ItemStacks representing the currently available bounties.
      */
     private List<ItemStack> makeBountyItemList() {
