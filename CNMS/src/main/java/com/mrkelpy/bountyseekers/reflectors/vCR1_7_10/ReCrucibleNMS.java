@@ -1,7 +1,6 @@
 package com.mrkelpy.bountyseekers.reflectors.vCR1_7_10;
 
 import com.mrkelpy.bountyseekers.interfaces.INMSReflector;
-import org.apache.commons.lang.ObjectUtils;
 
 import java.io.DataInputStream;
 import java.io.DataOutput;
@@ -31,7 +30,7 @@ public class ReCrucibleNMS implements INMSReflector {
         } catch (ClassNotFoundException e) {
             // If an error happens, print it into console and return null.
             e.printStackTrace();
-            return ObjectUtils.Null.class;
+            return null;
         }
     }
 
@@ -69,7 +68,7 @@ public class ReCrucibleNMS implements INMSReflector {
 
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
-                return ObjectUtils.Null.class;
+                return null;
             }
         }
 
@@ -83,7 +82,7 @@ public class ReCrucibleNMS implements INMSReflector {
             } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
                      InvocationTargetException e) {
                 e.printStackTrace();
-                return ObjectUtils.Null.class;
+                return null;
             }
         }
 
@@ -124,7 +123,7 @@ public class ReCrucibleNMS implements INMSReflector {
 
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
-                return ObjectUtils.Null.class;
+                return null;
             }
         }
     }
@@ -150,7 +149,7 @@ public class ReCrucibleNMS implements INMSReflector {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                return ObjectUtils.Null.class;
+                return null;
             }
         }
 
@@ -169,7 +168,7 @@ public class ReCrucibleNMS implements INMSReflector {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                return ObjectUtils.Null.class;
+                return null;
             }
         }
 

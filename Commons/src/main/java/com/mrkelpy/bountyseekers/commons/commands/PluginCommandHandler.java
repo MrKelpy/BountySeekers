@@ -89,8 +89,8 @@ public class PluginCommandHandler implements CommandExecutor {
             return true;
 
         } catch (InvocationTargetException e) {
-            commandSender.sendMessage("§cAn internal error happened whilst running this command. Please report the issue to the plugin developer.");
-            PluginConstants.LOGGER.warning("An internal error happened whilst running <" + command + "> with arguments" + String.join(", ", args));
+            commandSender.sendMessage("§cAn internal error happened whilst running this command. Please report this issue to the plugin developer.");
+            PluginConstants.LOGGER.warning("An internal error happened whilst running <" + command + "> with arguments [" + String.join(", ", args) + "]");
             PluginConstants.LOGGER.warning("Error: " + e.getCause().getMessage());
             return true;
         } catch (NoSuchMethodException | IllegalAccessException ignored) {

@@ -6,7 +6,9 @@ import com.mrkelpy.bountyseekers.commons.carriers.SimplePlayer;
 import com.mrkelpy.bountyseekers.commons.configuration.InternalConfigs;
 import com.mrkelpy.bountyseekers.commons.enums.CompatibilityMode;
 import com.mrkelpy.bountyseekers.commons.utils.ChatUtils;
+import com.mrkelpy.bountyseekers.commons.utils.FileUtils;
 import com.mrkelpy.bountyseekers.commons.utils.ItemStackUtils;
+import com.mrkelpy.bountyseekers.commons.utils.PluginConstants;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
 import org.bukkit.Material;
@@ -31,14 +33,16 @@ public class BountyRaiseGUI extends ConfirmationGUI {
 
     private final Bounty bounty;
     private final Benefactor benefactor;
+    private final CompatibilityMode compatibility;
 
     /**
-     * Main constructor for the ConfirmationGUI class.
+     * Main constructor for the RewardFilterGUI class.
      */
     public BountyRaiseGUI(SimplePlayer target, Benefactor benefactor, CompatibilityMode compatibility) {
         super("Raise " + target.getName() + "'s Bounty", 27, benefactor.getPlayer().getUniqueId());
         this.bounty = new Bounty(target.getUniqueId(), compatibility);
         this.benefactor = benefactor;
+        this.compatibility = compatibility;
     }
 
     /**
@@ -63,9 +67,15 @@ public class BountyRaiseGUI extends ConfirmationGUI {
         }
 
         int rewardLimit = InternalConfigs.INSTANCE.getConfig().getInt("reward-limit");
+        ItemStack[] rewardFilter = FileUtils.getRewardFilter(this.compatibility);
 
         // Adds all the rewards inside the GUI to the bounty, and adds the benefactor.
         for (int i = 0; this.storageSlots > i; i++) {
+
+            // Prevents the player from adding in items that aren't in the filter.
+            if (rewardFilter != null && this.inventory.getItem(i) != null && !Arrays.asList(rewardFilter).contains(ItemStackUtils.makePivot(this.inventory.getItem(i)))) {
+                continue;
+            }
 
             // Prevents the player from raising the target's bounty over the maximum amount.
             if (this.inventory.getItem(i) != null && this.bounty.getRewards().size() >= rewardLimit && rewardLimit != -1) {
@@ -91,7 +101,7 @@ public class BountyRaiseGUI extends ConfirmationGUI {
 
         // Sends the "items returned" warning message in case there are still items left inside the GUI to be returned to the player.
         if (Arrays.stream(this.inventory.getContents()).filter(Objects::nonNull).count() > 2)
-            player.sendMessage(ChatUtils.sendMessage(null, "Some items were returned to you because they would overflow the maximum reward limit for that target."));
+            player.sendMessage(ChatUtils.sendMessage(null, "Sorry! You can't submit those rewards right now."));
 
         // Returns any leftover items to the player.
         for (int i = 0; this.storageSlots > i; i++) {
@@ -122,11 +132,8 @@ public class BountyRaiseGUI extends ConfirmationGUI {
     @Override
     public void onCancel(Player player) {
 
-        // Unregisters the event handlers and closes the inventory so there's no recursion
+        // Unregisters the event handlers so there's no recursion
         HandlerList.unregisterAll(this);
-
-        if (this.benefactor.getPlayer().getOpenInventory().getType() == InventoryType.CHEST)
-            this.benefactor.getPlayer().closeInventory();
 
         // Drops all the items inside the GUI at the player's location if they die with the GUI open
         if (player.getHealth() == 0 && Boolean.FALSE.equals(player.getWorld().getGameRuleValue(GameRule.KEEP_INVENTORY))) {
@@ -139,9 +146,11 @@ public class BountyRaiseGUI extends ConfirmationGUI {
             return;
         }
 
-        // If that doesn't happen, and there's a normal cancellation, return the items to the player.
+        // If that doesn't happen, and there's a normal cancellation, return the items to the player and close the inventory after.
         this.benefactor.getPlayer().getInventory().setContents(this.benefactor.getInventory().getContents());
 
+        if (this.benefactor.getPlayer().getOpenInventory().getType() == InventoryType.CHEST)
+            this.benefactor.getPlayer().closeInventory();
     }
 
     /**
@@ -181,8 +190,10 @@ public class BountyRaiseGUI extends ConfirmationGUI {
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
 
-        if (event.getInventory().equals(this.inventory))
-            this.onCancel((Player) event.getPlayer());
+        if (event.getInventory().equals(this.inventory) && this.userUUID.equals(event.getPlayer().getUniqueId()))
+
+            Bukkit.getScheduler().runTaskLater(Bukkit.getPluginManager().getPlugin(PluginConstants.PLUGIN_NAME),
+                    () -> this.onCancel((Player) event.getPlayer()), 3L);
     }
 
     /**

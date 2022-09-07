@@ -6,11 +6,13 @@ package com.mrkelpy.bountyseekers.commons.enums;
  */
 public enum CommandRegistry {
 
-    SET_REWARD_LIMIT("/bounty setrewardlimit <limit>", "bounty.admin.setrewardlimit", "Sets the maximum amount of rewards a player can receive for their bounty."),
     BOUNTY_LIST("/bounty list", "bounty.list", "Displays the list of active bounties."),
+    CHECK("/bounty check <target player>", "bounty.check", "Checks the bounty on a player."),
     BOUNTY_RAISE("/bounty raise <target player>", "bounty.raise", "Raises the bounty on a player by contributing to the player's bounty reward."),
     BOUNTY_SILENT_RAISE("/bounty silentraise <target player>", "bounty.raise.silent", "Raises the bounty for a player, hiding the identity of the benefactor."),
     BOUNTY_RESET("/bounty reset <target player>", "bounty.reset", "Resets the bounty on a player."),
+    SET_REWARD_LIMIT("/bounty setrewardlimit <limit>", "bounty.admin.setrewardlimit", "Sets the maximum amount of rewards a player can receive for their bounty."),
+    SET_REWARD_FILTERS("/bounty setrewardfilters", "bounty.admin.setrewardfilters", "Sets the items that can go into a bounty's rewards."),
     HELP("/bounty help", "bounty.help", "Displays the help menu.");
 
     private final String usage;

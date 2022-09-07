@@ -1,7 +1,6 @@
 package com.mrkelpy.bountyseekers.reflectors.v1_7;
 
 import com.mrkelpy.bountyseekers.interfaces.INMSReflector;
-import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Bukkit;
 
 import java.io.DataInputStream;
@@ -32,7 +31,7 @@ public class ReNMS implements INMSReflector {
         } catch (ClassNotFoundException e) {
             // If an error happens, print it into console and return null.
             e.printStackTrace();
-            return ObjectUtils.Null.class;
+            return null;
         }
     }
 
@@ -70,7 +69,7 @@ public class ReNMS implements INMSReflector {
 
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
-                return ObjectUtils.Null.class;
+                return null;
             }
         }
 
@@ -84,7 +83,7 @@ public class ReNMS implements INMSReflector {
             } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
                      InvocationTargetException e) {
                 e.printStackTrace();
-                return ObjectUtils.Null.class;
+                return null;
             }
         }
 
@@ -126,7 +125,7 @@ public class ReNMS implements INMSReflector {
 
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
-                return ObjectUtils.Null.class;
+                return null;
             }
         }
     }
@@ -153,7 +152,7 @@ public class ReNMS implements INMSReflector {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                return ObjectUtils.Null.class;
+                return null;
             }
         }
 
@@ -172,7 +171,7 @@ public class ReNMS implements INMSReflector {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                return ObjectUtils.Null.class;
+                return null;
             }
         }
 

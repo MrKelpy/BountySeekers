@@ -51,6 +51,9 @@ public class InternalConfigs {
         if (!this.getConfig().contains("reward-limit"))
             this.getConfig().set("reward-limit", -1);
 
+        if (!this.getConfig().contains("reward-filter"))
+            this.getConfig().set("reward-filter", null);
+
         this.save();
     }
 

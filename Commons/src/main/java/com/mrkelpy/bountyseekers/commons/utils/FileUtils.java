@@ -1,6 +1,9 @@
 package com.mrkelpy.bountyseekers.commons.utils;
 
+import com.mrkelpy.bountyseekers.commons.configuration.InternalConfigs;
+import com.mrkelpy.bountyseekers.commons.enums.CompatibilityMode;
 import org.bukkit.Bukkit;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,9 +69,23 @@ public class FileUtils {
             if (!file.exists()) file.createNewFile();
             Files.write(file.toPath(), data.getBytes());
 
-        } catch (IOException ignored) {
-        }
+        } catch (IOException ignored) {}
 
+    }
+
+    /**
+     * Returns the contents inside the reward filter in the Internal Configs,
+     * or null, if there are none.
+     * @return The contents of the reward filter.
+     */
+    public static ItemStack[] getRewardFilter(CompatibilityMode compatibility) {
+
+        // Checks if there are any items in the reward filter.
+        String serializedItems = InternalConfigs.INSTANCE.getConfig().getString("reward-filter");
+        if (serializedItems == null) return null;
+
+        // If there are, de-serialize the items from the base64 string stored in the internal configs and add them to the inventory.
+        return new SerializationUtils(compatibility).itemStackArrayFromBase64(serializedItems);
     }
 }
 

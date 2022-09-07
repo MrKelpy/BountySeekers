@@ -5,48 +5,40 @@ import com.mrkelpy.bountyseekers.commons.carriers.Bounty;
 import com.mrkelpy.bountyseekers.commons.carriers.SimplePlayer;
 import com.mrkelpy.bountyseekers.commons.commands.ICommandImplementations;
 import com.mrkelpy.bountyseekers.commons.commands.PluginCommandHandler;
-import com.mrkelpy.bountyseekers.commons.configuration.InternalConfigs;
 import com.mrkelpy.bountyseekers.commons.configuration.UUIDCache;
 import com.mrkelpy.bountyseekers.commons.enums.CommandRegistry;
 import com.mrkelpy.bountyseekers.commons.gui.BountyRaiseGUI;
+import com.mrkelpy.bountyseekers.commons.gui.RewardFilterGUI;
 import com.mrkelpy.bountyseekers.commons.utils.ChatUtils;
+import com.mrkelpy.bountyseekers.v1_17.gui.BountyDisplayGUI;
 import com.mrkelpy.bountyseekers.v1_17.gui.BountyListDisplayGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.UUID;
 
 public class CommandImplementations implements ICommandImplementations {
 
     /**
-     * Changes the configured reward limit for bounties.
-     *
+     * Changes the configured reward filters in the Internal Configurations.
      * @param commandSender The sender of the command
      * @param args          The arguments of the command
      * @return Boolean, feedback to the caller
      */
     @Override
-    public boolean setRewardLimitCommand(CommandSender commandSender, String[] args) {
+    public boolean setRewardFiltersCommand(CommandSender commandSender, String[] args) {
 
-        if (!PluginCommandHandler.checkPermission(CommandRegistry.SET_REWARD_LIMIT.getPermission(), commandSender))
+        if (!PluginCommandHandler.checkPermission(CommandRegistry.SET_REWARD_FILTERS.getPermission(), commandSender))
             return true;
 
-        if (args.length != 1) {
-            commandSender.sendMessage("§cUsage: /bounty setrewardlimit <amount>");
-            return true;
-        }
+        if (!(commandSender instanceof Player)) return false;
+        Player player = (Player) commandSender;
 
-        try {
-            // Changes the reward limit to the amount specified
-            InternalConfigs.INSTANCE.getConfig().set("reward-limit", Integer.parseInt(args[0]));
-            InternalConfigs.INSTANCE.save();
-            commandSender.sendMessage(ChatUtils.sendMessage(null, "Reward limit set to " + Integer.parseInt(args[0])));
-            return true;
-        } catch (NumberFormatException e) {
-            // If the argument is not a number, send an error message
-            commandSender.sendMessage("Limit must be numeric.");
-            return true;
-        }
+        new RewardFilterGUI(BountySeekers.compatibility, player).openInventory();
+        return true;
     }
 
     /**
@@ -67,6 +59,46 @@ public class CommandImplementations implements ICommandImplementations {
         Player player = (Player) commandSender;
 
         new BountyListDisplayGUI(player).openInventory();
+        return true;
+    }
+
+    /**
+     * Directly opens the GUI displaying the bounty of a player.
+     * @param commandSender The sender of the command
+     * @param args          The arguments of the command
+     * @return Boolean, feedback to the caller
+     */
+    @Override
+    public boolean checkCommand(CommandSender commandSender, String[] args) {
+
+        if (!PluginCommandHandler.checkPermission(CommandRegistry.CHECK.getPermission(), commandSender))
+            return true;
+
+        // Only players can use this command
+        if (!(commandSender instanceof Player)) return false;
+
+        if (args.length != 1) {
+            commandSender.sendMessage( "§cUsage: " + CommandRegistry.CHECK.getUsage());
+            return true;
+        }
+
+        // Check if the player can be found
+        Player player = (Player) commandSender;
+        UUID targetUUID = UUIDCache.INSTANCE.getUUID(args[0]);
+        if (targetUUID == null) {
+            commandSender.sendMessage( "§cThat player cannot be found.");
+            return true;
+        }
+
+        // Check if the player has a bounty
+        Bounty bounty = new Bounty(targetUUID, BountySeekers.compatibility);
+        if (bounty.getRewards().size() == 0) {
+            ChatUtils.sendMessage(player, "Could not find an active bounty for that player.");
+            return true;
+        }
+
+        // Open the GUI
+        new BountyDisplayGUI(player, bounty.getRewards().toArray(new ItemStack[0])).openInventory();
         return true;
     }
 
@@ -101,7 +133,7 @@ public class CommandImplementations implements ICommandImplementations {
         Player player = (Player) commandSender;
 
         if (target.getUniqueId() == null) {
-            commandSender.sendMessage("§cThat player cannot found.");
+            commandSender.sendMessage("§cThat player cannot be found.");
             return true;
         }
 
@@ -140,7 +172,7 @@ public class CommandImplementations implements ICommandImplementations {
         Player player = (Player) commandSender;
 
         if (target.getUniqueId() == null) {
-            commandSender.sendMessage("§cThat player cannot found.");
+            commandSender.sendMessage("§cThat player cannot be found.");
             return true;
         }
 
@@ -168,7 +200,7 @@ public class CommandImplementations implements ICommandImplementations {
 
         OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
         if (UUIDCache.INSTANCE.getName(target.getUniqueId()) == null) {
-            commandSender.sendMessage("§cThat player cannot found.");
+            commandSender.sendMessage("§cThat player cannot be found.");
             return true;
         }
 

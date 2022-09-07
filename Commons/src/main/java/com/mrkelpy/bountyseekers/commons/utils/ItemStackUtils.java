@@ -29,8 +29,7 @@ public class ItemStackUtils {
             if (item == null || item.getType() == Material.AIR) continue;
 
             // Creates a pivot ItemStack to use for comparison.
-            ItemStack pivot = item.clone();
-            pivot.setAmount(1);
+            ItemStack pivot = ItemStackUtils.makePivot(item);
 
             if (generationMap.containsKey(pivot))
                 generationMap.put(pivot, generationMap.get(pivot) + item.getAmount());
@@ -89,6 +88,23 @@ public class ItemStackUtils {
     }
 
     /**
+     * Iterates over the given list and adds every ItemStack to a new list, ignoring the addition
+     * of an ItemStack if it is already inside the list.
+     * @param list The list to remove the duplicates from
+     * @return The list without duplicates
+     */
+    public static List<ItemStack> removeDuplicates(List<ItemStack> list) {
+        List<ItemStack> newList = new ArrayList<>();
+
+        for (ItemStack item : list) {
+            if (!newList.contains(item))
+                newList.add(item);
+        }
+
+        return newList;
+    }
+
+    /**
      * Filters out the slots that are not storage slots in the inventory. (The hotbar + the 27 storage ones)
      *
      * @param player The player to check.
@@ -118,6 +134,17 @@ public class ItemStackUtils {
         meta.setDisplayName(name);
         renamed.setItemMeta(meta);
         return renamed;
+    }
+
+    /**
+     * Creates a new ItemStack with the given material and amount set to 1.
+     * @param item The material to create the itemStack with.
+     * @return The pivot item.
+     */
+    public static ItemStack makePivot(ItemStack item) {
+        ItemStack pivot = item.clone();
+        pivot.setAmount(1);
+        return pivot;
     }
 }
 

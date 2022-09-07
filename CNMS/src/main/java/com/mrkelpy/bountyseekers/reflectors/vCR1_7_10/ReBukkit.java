@@ -1,7 +1,6 @@
 package com.mrkelpy.bountyseekers.reflectors.vCR1_7_10;
 
 import com.mrkelpy.bountyseekers.interfaces.IBukkitReflector;
-import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,7 +27,7 @@ public class ReBukkit implements IBukkitReflector {
         } catch (ClassNotFoundException e) {
             // If an error happens, print it into console and return null.
             e.printStackTrace();
-            return ObjectUtils.Null.class;
+            return null;
         }
     }
 
@@ -59,7 +58,7 @@ public class ReBukkit implements IBukkitReflector {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                return ObjectUtils.Null.class;
+                return null;
             }
         }
 

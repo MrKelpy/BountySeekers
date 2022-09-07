@@ -1,6 +1,8 @@
 package com.mrkelpy.bountyseekers.commons.commands;
 
+import com.mrkelpy.bountyseekers.commons.configuration.InternalConfigs;
 import com.mrkelpy.bountyseekers.commons.enums.CommandRegistry;
+import com.mrkelpy.bountyseekers.commons.utils.ChatUtils;
 import com.mrkelpy.bountyseekers.commons.utils.PluginConstants;
 import org.bukkit.command.CommandSender;
 
@@ -10,24 +12,60 @@ import org.bukkit.command.CommandSender;
  */
 public interface ICommandImplementations {
 
-    default boolean setRewardLimitCommand(CommandSender commandSender, String[] args) {
-        return true;
+    default boolean listCommand(CommandSender commandSender, String[] args) {
+        return false;
     }
 
-    default boolean listCommand(CommandSender commandSender, String[] args) {
-        return true;
+    default boolean checkCommand(CommandSender commandSender, String[] args) {
+        return false;
     }
 
     default boolean raiseCommand(CommandSender commandSender, String[] args) {
-        return true;
+        return false;
     }
 
     default boolean silentRaiseCommand(CommandSender commandSender, String[] args) {
-        return true;
+        return false;
     }
 
     default boolean resetCommand(CommandSender commandSender, String[] args) {
-        return true;
+        return false;
+    }
+
+    default boolean setRewardFiltersCommand(CommandSender commandSender, String[] args) {
+        return false;
+    }
+
+    /**
+     * Changes the configured reward limit for bounties.
+     *
+     * @param commandSender The sender of the command
+     * @param args          The arguments of the command
+     * @return Boolean, feedback to the caller
+     */
+    default boolean setRewardLimitCommand(CommandSender commandSender, String[] args) {
+
+        if (!PluginCommandHandler.checkPermission(CommandRegistry.SET_REWARD_LIMIT.getPermission(), commandSender))
+            return true;
+
+        if (args.length != 1) {
+            commandSender.sendMessage("§cUsage: /bounty setrewardlimit <amount>");
+            return true;
+        }
+
+        try {
+            // Changes the reward limit to the amount specified
+            InternalConfigs.INSTANCE.getConfig().set("reward-limit", Integer.parseInt(args[0]));
+            InternalConfigs.INSTANCE.save();
+            commandSender.sendMessage(ChatUtils.sendMessage(null, "Reward limit set to " + Integer.parseInt(args[0])));
+            return true;
+
+        } catch (NumberFormatException e) {
+            // If the argument is not a number, send an error message
+            commandSender.sendMessage("Limit must be numeric.");
+            return true;
+        }
+
     }
 
     /**
