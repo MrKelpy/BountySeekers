@@ -61,6 +61,8 @@ public class RewardFilterGUI extends ConfirmationGUI {
     public void onConfirm(Player player) {
 
         // Unregisters the listeners and closes the inventory.
+        HandlerList.unregisterAll(this);
+
         if (this.user.getOpenInventory().getType() == InventoryType.CHEST)
             this.user.closeInventory();
 
