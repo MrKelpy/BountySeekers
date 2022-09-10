@@ -16,9 +16,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * This abstract class handles the pagination for any GUI that extends it.
@@ -90,7 +88,17 @@ public abstract class PagedGUI implements Listener {
      */
     @EventHandler
     public void onItemClick(InventoryClickEvent event) {
-        if (event.getInventory().equals(this.inventory) && event.getWhoClicked().getUniqueId().equals(this.userUUID))
+
+        // Checks if the inventory being used is the one that this class is using.
+        boolean instanceEvaluation = event.getInventory().equals(this.inventory) && event.getWhoClicked().getUniqueId().equals(this.userUUID);
+
+        // Checks if a shift click was performed on the player inventory whilst the GUI is already full, thus sending the item to the unused 7 slots between the buttons.
+        if (instanceEvaluation && Collections.frequency(Arrays.asList(this.inventory.getContents()), null) == 7 && event.isShiftClick() && event.getRawSlot() >= this.inventory.getSize()) {
+            event.setCancelled(true);
+        }
+
+        // Checks if the click was performed on the GUI, so the button clicks can be processed.
+        if (instanceEvaluation && event.getRawSlot() > this.storageSlots && event.getRawSlot() <= this.inventory.getSize())
             event.setCancelled(true);
         else return;
 

@@ -134,7 +134,10 @@ public class Bounty {
      */
     public void save() {
         List<ItemStack> compressedRewards = ItemStackUtils.compress(this.rewards);
-        FileUtils.writeFile(this.bountyFile, this.serializationUtils.itemStackArrayToBase64(compressedRewards.toArray(new ItemStack[0])));
+
+        if (compressedRewards.size() > 0)
+            FileUtils.writeFile(this.bountyFile, this.serializationUtils.itemStackArrayToBase64(compressedRewards.toArray(new ItemStack[0])));
+
         UUIDCache.INSTANCE.set(this.targetUUID, this.target);
     }
 

@@ -15,9 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
@@ -104,7 +102,7 @@ public class BountyRaiseGUI extends ConfirmationGUI {
             player.sendMessage(ChatUtils.sendMessage(null, "Sorry! You can't submit those rewards right now."));
 
         // Returns any leftover items to the player.
-        for (int i = 0; this.storageSlots > i; i++) {
+        for (int i = 0; this.storageSlots + 1 > i; i++) {
 
             if (this.inventory.getItem(i) == null) continue;
             this.benefactor.getPlayer().getInventory().addItem(this.inventory.getItem(i));
@@ -137,7 +135,7 @@ public class BountyRaiseGUI extends ConfirmationGUI {
 
         // Drops all the items inside the GUI at the player's location if they die with the GUI open
         if (player.getHealth() == 0 && Boolean.FALSE.equals(player.getWorld().getGameRuleValue(GameRule.KEEP_INVENTORY))) {
-            for (int i = 0; this.storageSlots >= i; i++) {
+            for (int i = 0; this.storageSlots + 1 >= i; i++) {
                 ItemStack item = this.inventory.getItem(i);
 
                 if (item != null && item.getType() != Material.AIR)
@@ -151,34 +149,6 @@ public class BountyRaiseGUI extends ConfirmationGUI {
 
         if (this.benefactor.getPlayer().getOpenInventory().getType() == InventoryType.CHEST)
             this.benefactor.getPlayer().closeInventory();
-    }
-
-    /**
-     * Prevents the player from picking up the confirmation button items.
-     *
-     * @param event InventoryClickEvent
-     */
-    @Override
-    @EventHandler
-    public void onItemClick(InventoryClickEvent event) {
-
-        if (event.getRawSlot() > this.storageSlots && event.getRawSlot() < this.inventory.getSize())
-            super.onItemClick(event);
-    }
-
-    /**
-     * Allows the player to drag stuff around by limiting the superclass code
-     * to the 9 bottom slots.
-     *
-     * @param event InventoryDragEvent
-     */
-    @Override
-    @EventHandler
-    public void onItemDrag(InventoryDragEvent event) {
-
-        if (event.getNewItems().keySet().stream().anyMatch(slot -> slot > this.storageSlots))
-            super.onItemDrag(event);
-
     }
 
     /**

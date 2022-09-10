@@ -9,10 +9,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -61,9 +60,13 @@ public class RewardFilterGUI extends ConfirmationGUI {
     @Override
     public void onConfirm(Player player) {
 
+        // Unregisters the listeners and closes the inventory.
+        if (this.user.getOpenInventory().getType() == InventoryType.CHEST)
+            this.user.closeInventory();
+
         // Converts every item in the inventory into pivot items.
         List<ItemStack> items = new ArrayList<>();
-        for (int i = 0; i < this.storageSlots; i++) {
+        for (int i = 0; i < this.storageSlots + 1; i++) {
 
             ItemStack item = this.inventory.getItem(i);
             if (item == null || item.getType() == Material.AIR) continue;
@@ -76,10 +79,6 @@ public class RewardFilterGUI extends ConfirmationGUI {
         InternalConfigs.INSTANCE.getConfig().set("reward-filter", serialized);
         InternalConfigs.INSTANCE.save();
         ChatUtils.sendMessage(player, "Updated the reward filters!");
-
-        // Unregisters the listeners and closes the inventory.
-        HandlerList.unregisterAll(this);
-        player.closeInventory();
     }
 
     /**
@@ -98,7 +97,7 @@ public class RewardFilterGUI extends ConfirmationGUI {
 
         // Drops all the items inside the GUI at the player's location if they die with the GUI open
         if (player.getHealth() == 0 && Boolean.FALSE.equals(player.getWorld().getGameRuleValue(GameRule.KEEP_INVENTORY))) {
-            for (int i = 0; this.storageSlots >= i; i++) {
+            for (int i = 0; this.storageSlots + 1 >= i; i++) {
                 ItemStack item = this.inventory.getItem(i);
 
                 if (item != null && item.getType() != Material.AIR)
@@ -112,31 +111,14 @@ public class RewardFilterGUI extends ConfirmationGUI {
     }
 
     /**
-     * Prevents the player from picking up the confirmation button items.
-     *
-     * @param event InventoryClickEvent
+     * Stops a player from being able to drop items from this GUI.
+     * @param event The event that was fired.
      */
-    @Override
     @EventHandler
-    public void onItemClick(InventoryClickEvent event) {
+    public void onItemClick(PlayerDropItemEvent event) {
 
-        if (event.getRawSlot() > this.storageSlots && event.getRawSlot() < this.inventory.getSize())
-            super.onItemClick(event);
-    }
-
-    /**
-     * Allows the player to drag stuff around by limiting the superclass code
-     * to the 9 bottom slots.
-     *
-     * @param event InventoryDragEvent
-     */
-    @Override
-    @EventHandler
-    public void onItemDrag(InventoryDragEvent event) {
-
-        if (event.getNewItems().keySet().stream().anyMatch(slot -> slot > this.storageSlots))
-            super.onItemDrag(event);
-
+        if (event.getPlayer().getUniqueId().equals(this.userUUID))
+            event.setCancelled(true);
     }
 
     /**
