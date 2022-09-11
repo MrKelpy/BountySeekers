@@ -1,5 +1,6 @@
 package com.mrkelpy.bountyseekers.commons.commands;
 
+import com.mrkelpy.bountyseekers.commons.enums.CommandRegistry;
 import com.mrkelpy.bountyseekers.commons.utils.PluginConstants;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -37,7 +38,7 @@ public class PluginCommandHandler implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
 
-        if (Objects.equals(command.getName(), "bounty")) {
+        if (Objects.equals(command.getName(), CommandRegistry.MASTER.getUsage().substring(1))) {
             this.parseCommands(commandSender, args);
         }
 
@@ -54,7 +55,7 @@ public class PluginCommandHandler implements CommandExecutor {
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean checkPermission(String permission, CommandSender sender) {
-        if (sender.hasPermission("bounty.*") || sender.isOp() || sender.hasPermission(permission))
+        if (sender.hasPermission(CommandRegistry.MASTER.getPermission() + ".*") || sender.isOp() || sender.hasPermission(permission))
             return true;
 
         sender.sendMessage("§cYou do not have permission to use this command");
@@ -96,7 +97,7 @@ public class PluginCommandHandler implements CommandExecutor {
         } catch (NoSuchMethodException | IllegalAccessException ignored) {
         }
 
-        commandSender.sendMessage("§cUnknown command. Use /bounty help for a list of available commands");
+        commandSender.sendMessage("§cUnknown command. Use " + CommandRegistry.HELP.getUsage() + " for a list of available commands");
         return true;
     }
 

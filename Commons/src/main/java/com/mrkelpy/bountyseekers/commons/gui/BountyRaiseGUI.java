@@ -17,6 +17,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -176,6 +177,21 @@ public class BountyRaiseGUI extends ConfirmationGUI {
 
         if (event.getPlayer() == this.benefactor.getPlayer())
             event.setCancelled(true);
+    }
+
+    /**
+     * While this GUI is opened, the benefactor can't drop any items, to prevent dupes.
+     * @param event PlayerDropItemEvent
+     */
+    @EventHandler
+    public void onItemDrop(PlayerDropItemEvent event) {
+
+        if (event.getPlayer().getUniqueId() == this.benefactor.getPlayer().getUniqueId()) {
+            event.setCancelled(true);
+
+            Bukkit.getScheduler().runTaskLater(Bukkit.getPluginManager().getPlugin(PluginConstants.PLUGIN_NAME),
+                    () -> event.getPlayer().updateInventory(), 1L);
+        }
     }
 
 }

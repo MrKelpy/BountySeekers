@@ -6,6 +6,7 @@ package com.mrkelpy.bountyseekers.commons.enums;
  */
 public enum CommandRegistry {
 
+    MASTER("/bounty", "bounty", "Master command", false),
     BOUNTY_LIST("/bounty list", "bounty.list", "Displays the list of active bounties."),
     CHECK("/bounty check <target player>", "bounty.check", "Checks the bounty on a player."),
     BOUNTY_RAISE("/bounty raise <target player>", "bounty.raise", "Raises the bounty on a player by contributing to the player's bounty reward."),
@@ -18,6 +19,7 @@ public enum CommandRegistry {
     private final String usage;
     private final String permission;
     private final String description;
+    private final boolean visible;
 
     /**
      * Main constructor for the CommandRegistry enum.
@@ -25,11 +27,24 @@ public enum CommandRegistry {
      * @param usage       The usage of the command.
      * @param permission  The permission needed to execute the command.
      * @param description The command description.
+     * @param visible     Whether the command should be visible in the help menu or not.
      */
-    CommandRegistry(String usage, String permission, String description) {
+    CommandRegistry(String usage, String permission, String description, boolean visible) {
         this.usage = usage;
         this.permission = permission;
         this.description = description;
+        this.visible = visible;
+    }
+
+    /**
+     * Shortcut constructor for the CommandRegistry enum. Sets visibility to true.
+     *
+     * @param usage       The usage of the command.
+     * @param permission  The permission needed to execute the command.
+     * @param description The command description.
+     */
+    CommandRegistry(String usage, String permission, String description) {
+        this(usage, permission, description, true);
     }
 
     public String getUsage() {
@@ -42,6 +57,10 @@ public enum CommandRegistry {
 
     public String getDescription() {
         return description;
+    }
+
+    public boolean isVisible() {
+        return visible;
     }
 
 }

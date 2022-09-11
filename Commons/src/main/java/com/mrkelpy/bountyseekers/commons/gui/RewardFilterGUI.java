@@ -117,10 +117,14 @@ public class RewardFilterGUI extends ConfirmationGUI {
      * @param event The event that was fired.
      */
     @EventHandler
-    public void onItemClick(PlayerDropItemEvent event) {
+    public void onItemDrop(PlayerDropItemEvent event) {
 
-        if (event.getPlayer().getUniqueId().equals(this.userUUID))
+        if (event.getPlayer().getUniqueId().equals(this.userUUID)) {
             event.setCancelled(true);
+
+            Bukkit.getScheduler().runTaskLater(Bukkit.getPluginManager().getPlugin(PluginConstants.PLUGIN_NAME),
+                    () -> event.getPlayer().updateInventory(), 1L);
+        }
     }
 
     /**

@@ -12,29 +12,17 @@ import org.bukkit.command.CommandSender;
  */
 public interface ICommandImplementations {
 
-    default boolean listCommand(CommandSender commandSender, String[] args) {
-        return false;
-    }
+    boolean listCommand(CommandSender commandSender, String[] args);
 
-    default boolean checkCommand(CommandSender commandSender, String[] args) {
-        return false;
-    }
+    boolean checkCommand(CommandSender commandSender, String[] args);
 
-    default boolean raiseCommand(CommandSender commandSender, String[] args) {
-        return false;
-    }
+    boolean raiseCommand(CommandSender commandSender, String[] args);
 
-    default boolean silentRaiseCommand(CommandSender commandSender, String[] args) {
-        return false;
-    }
+    boolean silentRaiseCommand(CommandSender commandSender, String[] args);
 
-    default boolean resetCommand(CommandSender commandSender, String[] args) {
-        return false;
-    }
+    boolean resetCommand(CommandSender commandSender, String[] args);
 
-    default boolean setRewardFiltersCommand(CommandSender commandSender, String[] args) {
-        return false;
-    }
+    boolean setRewardFiltersCommand(CommandSender commandSender, String[] args);
 
     /**
      * Changes the configured reward limit for bounties.
@@ -49,7 +37,7 @@ public interface ICommandImplementations {
             return true;
 
         if (args.length != 1) {
-            commandSender.sendMessage("§cUsage: /bounty setrewardlimit <amount>");
+            commandSender.sendMessage("§cUsage:" + CommandRegistry.SET_REWARD_LIMIT.getUsage());
             return true;
         }
 
